@@ -2,6 +2,7 @@ package org.nmap4j.parsers;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
+import org.nmap4j.NmapTestUtils;
 import org.nmap4j.core.flags.Flag;
 import org.nmap4j.core.nmap.ExecutionResults;
 import org.nmap4j.core.nmap.NMapExecutionException;
@@ -142,7 +143,7 @@ public class OnePassParserTest implements IConstants {
 
     @Test
     public void testLocalHostScan() {
-        BaseScan baseScan = new BaseScan("/usr/local");
+        BaseScan baseScan = new BaseScan(NmapTestUtils.findNmapPath());
 
         baseScan.includeHost("localhost");
         baseScan.addPorts(new int[]{3306});

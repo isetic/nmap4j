@@ -3,6 +3,7 @@ package org.nmap4j.core.scans;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+import org.nmap4j.NmapTestUtils;
 import org.nmap4j.core.flags.Flag;
 import org.nmap4j.core.nmap.ExecutionResults;
 import org.nmap4j.core.nmap.NMapExecutionException;
@@ -17,7 +18,7 @@ public class BaseScanTest {
 	@Test
 	public void testSimpleScan() {
 		
-		BaseScan baseScan = new BaseScan( "/usr/local") ;
+		BaseScan baseScan = new BaseScan(NmapTestUtils.findNmapPath()) ;
 		
 		baseScan.includeHost( "localhost" ) ;
 		baseScan.addPorts(new int[]{ 22,80,443,3306} ) ;
