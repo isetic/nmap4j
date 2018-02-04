@@ -16,9 +16,9 @@ public class HostScript {
         return scripts;
     }
 
-    public Script getScript(String s) {
+    public Script getScript(String scriptId) {
         for (Script script : scripts) {
-            if (script.getId().equals(s)) {
+            if (script.getId().equals(scriptId)) {
                 return script;
             }
 

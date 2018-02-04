@@ -1,6 +1,7 @@
 package org.nmap4j.data.host.scripts;
 
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class Script {
     public static final String TAG = "script";
@@ -29,7 +30,7 @@ public class Script {
         elems.put(elemkey, ch);
     }
 
-    public LinkedHashMap<String, String> getElems() {
+    public Map<String, String> getElems() {
         return elems;
     }
 

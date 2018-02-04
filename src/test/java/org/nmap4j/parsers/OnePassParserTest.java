@@ -1,5 +1,6 @@
 package org.nmap4j.parsers;
 
+import com.sun.javafx.collections.MappingChange;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.nmap4j.core.flags.Flag;
@@ -25,6 +26,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 import static org.junit.Assert.fail;
 
@@ -243,7 +245,7 @@ public class OnePassParserTest implements IConstants {
                 continue;
             }
             Script script = hostScripts.getScript("smb-os-discovery");
-            LinkedHashMap<String, String> elems = script.getElems();
+            Map<String, String> elems = script.getElems();
             if (elems.size() == 0) {
                 continue;
             }
