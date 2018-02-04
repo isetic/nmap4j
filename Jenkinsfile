@@ -14,9 +14,9 @@ pipeline {
             steps {
                 //	sh 'mvn clean install -Dmaven.test.failure.ignore=true -DcreateChecksum=true'
 		sh "./gradlew clean build"
-	        dir('target'){
+	        dir('./build/libs'){
                   echo 'creating md5sums'
-                  sh 'test -f *.jar && md5sum *.jar>jar.md5sums'
+                  sh 'test -f org.nmap4j-1.0.4.jar && md5sum *.jar>jar.md5sums'
                 }
             }
         }
@@ -29,9 +29,11 @@ pipeline {
     }
     post {
       always {
-        archive "**/target/*jar"
-        archive "**/target/*md5sums"
-        junit '**/surefire-reports/TEST*.xml'
+        archive "**/target/**/*jar"
+        archive "**/build/**/*jar"
+        archive "**/target/**/*md5sums"
+        archive "**/build/**/*md5sums"
+        junit '**/TEST*.xml'
 
       }
     }
