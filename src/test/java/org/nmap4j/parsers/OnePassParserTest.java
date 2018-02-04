@@ -1,6 +1,5 @@
 package org.nmap4j.parsers;
 
-import com.sun.javafx.collections.MappingChange;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.nmap4j.core.flags.Flag;
@@ -25,7 +24,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static org.junit.Assert.fail;
