@@ -16,7 +16,7 @@ pipeline {
 		sh "./gradlew clean build"
 	        dir('./build/libs'){
                   echo 'creating md5sums'
-                  sh 'test -f org.nmap4j-1.0.4.jar && md5sum *.jar>jar.md5sums'
+                  sh 'test -f org.nmap4j-*.jar && md5sum *.jar>jar.md5sums'
                 }
             }
         }
