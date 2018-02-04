@@ -142,41 +142,34 @@ public class OnePassParserTest implements IConstants {
     }
 
     @Test
-    public void testLocalHostScan() {
+    public void testLocalHostScan() throws NMapExecutionException, NMapInitializationException, ParameterValidationFailureException {
         BaseScan baseScan = new BaseScan(NmapTestUtils.findNmapPath());
 
         baseScan.includeHost("localhost");
         baseScan.addPorts(new int[]{3306});
-        baseScan.addFlag(Flag.OS_DETECTION);
+        if(false) {
+            // disabled, needs root privileges
+            baseScan.addFlag(Flag.OS_DETECTION);
+        }
         baseScan.setTiming(TimingFlag.AGGRESSIVE);
 
-        try {
-            ExecutionResults results = baseScan.executeScan();
-            System.out.println(results.getExecutedCommand());
-            System.out.println(results.getOutput());
-            if (results.hasErrors()) {
-                System.out.println("Errors: " + results.getErrors());
-            } else {
-                System.out.println("Results: " + results.getOutput());
-            }
 
-            OnePassParser opp = new OnePassParser();
-            NMapRun nmapRun = opp.parse(results.getOutput(), OnePassParser.STRING_INPUT);
-
-            String output = nmapRun.getHosts().get(0).getPorts().getPorts().get(0).getState().getState();
-
-            System.out.println("Port state: " + output);
-
-        } catch (ParameterValidationFailureException e) {
-            e.printStackTrace();
-            fail();
-        } catch (NMapExecutionException e) {
-            e.printStackTrace();
-            fail();
-        } catch (NMapInitializationException e) {
-            e.printStackTrace();
-            fail();
+        ExecutionResults results = baseScan.executeScan();
+        System.out.println(results.getExecutedCommand());
+        System.out.println(results.getOutput());
+        if (results.hasErrors()) {
+            System.out.println("Errors: " + results.getErrors());
+        } else {
+            System.out.println("Results: " + results.getOutput());
         }
+
+        OnePassParser opp = new OnePassParser();
+        NMapRun nmapRun = opp.parse(results.getOutput(), OnePassParser.STRING_INPUT);
+
+        String output = nmapRun.getHosts().get(0).getPorts().getPorts().get(0).getState().getState();
+
+        System.out.println("Port state: " + output);
+
     }
 
     @Test
