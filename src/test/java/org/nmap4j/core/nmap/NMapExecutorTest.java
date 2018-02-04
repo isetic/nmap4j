@@ -3,6 +3,7 @@ package org.nmap4j.core.nmap;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.nmap4j.NmapTestUtils;
 import org.nmap4j.core.flags.ArgumentProperties;
 import org.nmap4j.core.flags.Flag;
 
@@ -86,7 +87,7 @@ public class NMapExecutorTest {
     @Test
     public void testExecuteMethodWithoutSudo() throws NMapInitializationException, NMapExecutionException {
 
-        nmapProps.setPath("/usr/local");
+        nmapProps.setPath(NmapTestUtils.findNmapPath());
 
         nmapArgs.addFlag(Flag.AGGRESIVE_TIMING);
         nmapArgs.addFlag(Flag.VERSION);
