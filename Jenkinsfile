@@ -12,7 +12,8 @@ pipeline {
       	}
         stage ('Build') {
             steps {
-                	sh 'mvn clean install -Dmaven.test.failure.ignore=true -DcreateChecksum=true'
+                //	sh 'mvn clean install -Dmaven.test.failure.ignore=true -DcreateChecksum=true'
+		sh "./gradlew clean build"
 	        dir('target'){
                   echo 'creating md5sums'
                   sh 'test -f *.jar && md5sum *.jar>jar.md5sums'
