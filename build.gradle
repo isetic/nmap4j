@@ -34,4 +34,10 @@ dependencies {
         from sourceSets.main.allSource
         classifier = 'sources'
     }
-
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+}

@@ -24,6 +24,7 @@ pipeline {
             steps {
 	      echo 'env.BRANCH_NAME...' + env.BRANCH_NAME
 		sh "./gradlew publish"
+// ./gradlew publishToMavenLocal
             }
         }
     }
