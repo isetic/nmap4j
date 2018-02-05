@@ -321,10 +321,9 @@ public class NMapXmlHandler extends DefaultHandler {
         }
         if (elemkey != null) {
             String uuu = new String(ch, start, length);
-            if (this.script == null) {
-                throw new RuntimeException();
+            if (this.script != null) {
+                this.script.addElem(this.elemkey, uuu);
             }
-            this.script.addElem(this.elemkey, uuu);
         }
     }
 
