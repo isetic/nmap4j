@@ -3,7 +3,7 @@ apply plugin: 'maven'
 apply plugin: 'maven-publish'
 
 group = 'org.nmap4j'
-version = '1.0.6'
+version = '1.0.7'
 
 description = 'A Java nmap wrapper'
 
