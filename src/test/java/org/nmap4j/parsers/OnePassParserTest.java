@@ -1,6 +1,7 @@
 package org.nmap4j.parsers;
 
 import org.apache.commons.io.IOUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.nmap4j.NmapTestUtils;
 import org.nmap4j.core.flags.Flag;
@@ -31,17 +32,13 @@ import static org.junit.Assert.fail;
 
 public class OnePassParserTest implements IConstants {
 
-    String fileName = "nmap-xml/ms-vscan.xml";
-    String smbFileName = "nmap-xml/SMB-os-discovery_CPE.xml";
-    int count = 0;
-
 
     public void testOnePass() {
         OnePassParser opp = new OnePassParser();
 
         NMapRun nmapRun = null;
         try {
-            InputStream is = getClass().getClassLoader().getResourceAsStream(fileName);
+            InputStream is = getClass().getClassLoader().getResourceAsStream(NmapDataSamples.fileName);
 
             String fileAsString = IOUtils.toString(is);
 
@@ -66,7 +63,7 @@ public class OnePassParserTest implements IConstants {
 
         NMapRun nmapRun = null;
         try {
-            InputStream is = getClass().getClassLoader().getResourceAsStream(smbFileName);
+            InputStream is = getClass().getClassLoader().getResourceAsStream(NmapDataSamples.smbFileName);
 
             String fileAsString = IOUtils.toString(is);
 
@@ -95,7 +92,7 @@ public class OnePassParserTest implements IConstants {
 
         NMapRun nmapRun = null;
         try {
-            InputStream is = getClass().getClassLoader().getResourceAsStream(smbFileName);
+            InputStream is = getClass().getClassLoader().getResourceAsStream(NmapDataSamples.smbFileName);
 
             String fileAsString = IOUtils.toString(is);
 
@@ -146,7 +143,7 @@ public class OnePassParserTest implements IConstants {
 
         baseScan.includeHost("localhost");
         baseScan.addPorts(new int[]{3306});
-        if(false) {
+        if (false) {
             // disabled, needs root privileges
             baseScan.addFlag(Flag.OS_DETECTION);
         }
@@ -183,7 +180,7 @@ public class OnePassParserTest implements IConstants {
         HostListener simpleListener = new HostListener();
 
         try {
-            InputStream is = getClass().getClassLoader().getResourceAsStream(smbFileName);
+            InputStream is = getClass().getClassLoader().getResourceAsStream(NmapDataSamples.smbFileName);
 
             String fileAsString = IOUtils.toString(is);
 
@@ -226,7 +223,7 @@ public class OnePassParserTest implements IConstants {
     @Test
     public void testHostScript() {
         OnePassParser onePassParser = new OnePassParser();
-        URL testFileUrl = getClass().getClassLoader().getResource(smbFileName);
+        URL testFileUrl = getClass().getClassLoader().getResource(NmapDataSamples.smbFileName);
         String testFilePath = testFileUrl.getFile();
         NMapRun nmap = onePassParser.parse(testFilePath, onePassParser.FILE_NAME_INPUT);
         for (Host host : nmap.getHosts()) {
@@ -245,6 +242,16 @@ public class OnePassParserTest implements IConstants {
             }
             System.out.println("");
         }
+        System.out.println("");
+    }
+
+    @Test
+    @Ignore
+    public void testHostScript2() {
+        OnePassParser onePassParser = new OnePassParser();
+        URL testFileUrl = getClass().getClassLoader().getResource(NmapDataSamples.uuu);
+        String testFilePath = testFileUrl.getFile();
+        NMapRun nmap = onePassParser.parse(testFilePath, onePassParser.FILE_NAME_INPUT);
         System.out.println("");
     }
 }
