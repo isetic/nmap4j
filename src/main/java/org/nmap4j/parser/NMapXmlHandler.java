@@ -298,7 +298,8 @@ public class NMapXmlHandler extends DefaultHandler {
                 if (this.elemkey != null) {
                     throw new RuntimeException();
                 }
-                if (this.script == null) {
+                if (false && this.script == null) {
+                    // esto se puede encontrar en script y al menos en table, por lo que desactivo.
                     throw new RuntimeException();
                 }
                 String elemKey = attributes.getValue("key");
