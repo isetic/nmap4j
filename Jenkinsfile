@@ -23,7 +23,7 @@ pipeline {
         stage ('publish'){
             steps {
 	      echo 'env.BRANCH_NAME...' + env.BRANCH_NAME
-		echo 'TODO'
+		sh "./gradlew publish"
             }
         }
     }
