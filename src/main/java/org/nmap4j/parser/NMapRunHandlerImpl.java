@@ -56,9 +56,11 @@ import org.nmap4j.data.nmaprun.host.ports.port.State;
 import org.nmap4j.data.nmaprun.hostnames.Hostname;
 import org.nmap4j.data.nmaprun.runstats.Finished;
 import org.nmap4j.data.nmaprun.runstats.Hosts;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.Attributes;
 
 public class NMapRunHandlerImpl implements INMapRunHandler {
+    private final org.slf4j.Logger logger = LoggerFactory.getLogger(Thread.currentThread().getStackTrace()[0].getClassName());
 
     public Address createAddress(Attributes attributes) {
         Address address = new Address();
@@ -308,8 +310,13 @@ public class NMapRunHandlerImpl implements INMapRunHandler {
 
         hop.setTtl(Integer.parseInt(attributes.getValue(Hop.TTL_ATTR)));
         hop.setIpaddr(attributes.getValue(Hop.IPADDR_ATTR));
-        hop.setRtt(Float.parseFloat(attributes.getValue(Hop.RTT_ATTR)));
-        ;
+        // en ocasiones nos encontramos con el valor "--"
+        try {
+            hop.setRtt(Float.parseFloat(attributes.getValue(Hop.RTT_ATTR)));
+        } catch (NumberFormatException e) {
+            logger.error("Bad rtt for hop", e);
+        }
+
         return hop;
     }
 
