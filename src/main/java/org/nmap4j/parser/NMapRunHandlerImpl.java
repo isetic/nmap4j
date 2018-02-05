@@ -327,9 +327,9 @@ public class NMapRunHandlerImpl implements INMapRunHandler {
         for (int cont = 0; cont < ll; cont++) {
             String value = attributes.getValue(cont);
             String name = attributes.getQName(cont);
-            String a3 = attributes.getType(cont);
-            String a4 = attributes.getLocalName(cont);
-            String a6 = attributes.getURI(cont);
+            String type = attributes.getType(cont);
+            String localName = attributes.getLocalName(cont);
+            String uri = attributes.getURI(cont);
             if (name.equals("id")) {
                 script.setId(value);
             } else if (name.equals("output")) {

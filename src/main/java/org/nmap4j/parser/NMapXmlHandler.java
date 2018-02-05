@@ -282,8 +282,11 @@ public class NMapXmlHandler extends DefaultHandler {
 			this.host.setHostScript(this.hostScript);
 		}
 		if(qName.equals(Script.TAG)){
-			this.script=runHandler.createScript(attributes);
-			this.hostScript.addScript(this.script);
+			if(this.hostScript!=null) {
+				// There are mor tags named script that are not this case.
+				this.script = runHandler.createScript(attributes);
+				this.hostScript.addScript(this.script);
+			}
 		}
 		if(qName.equals(Script.ELEMTAG)){
 			if(this.elemkey!=null){
@@ -431,8 +434,10 @@ public class NMapXmlHandler extends DefaultHandler {
 			hostScript=null;
 		}
 		if(qName.equals(Script.TAG)){
-			fireEvent(script);
-			script=null;
+			if(this.hostScript!=null) {
+				fireEvent(script);
+				script = null;
+			}
 		}
 		if(qName.equals(Script.ELEMTAG)){
 			elemkey=null;

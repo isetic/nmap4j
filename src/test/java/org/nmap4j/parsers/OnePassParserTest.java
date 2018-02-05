@@ -90,7 +90,6 @@ public class OnePassParserTest implements IConstants {
 
         System.out.println("start");
 
-        String smbFileName = "nmap-xml/SMB-os-discovery_CPE.xml";
 
         OnePassParser opp = new OnePassParser();
 
@@ -176,7 +175,6 @@ public class OnePassParserTest implements IConstants {
     public void testAddingListener() {
         System.out.println("start");
 
-        String smbFileName = "nmap-xml/SMB-os-discovery_CPE.xml";
 
         OnePassParser opp = new OnePassParser();
 
