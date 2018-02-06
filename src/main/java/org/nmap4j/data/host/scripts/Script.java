@@ -23,6 +23,10 @@ public class Script {
         this.output = outputValue;
     }
 
+    public String getOutput(){
+        return output;
+    }
+
     public void addElem(String elemkey, String ch) {
         if (elems.containsKey(elemkey)) {
             elems.put(elemkey, elems.get(elemkey) + ch);

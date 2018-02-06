@@ -91,6 +91,18 @@ public class Port {
         scripts.add(script);
     }
 
+    public LinkedList<Script> getScripts(){return scripts;}
+
+    public Script getScript(String id_){
+        for (Script script:scripts){
+            if(script.getId().equals(id_)){
+                return script;
+            }
+
+        }
+        return null;
+    }
+
     @Override
     public String toString() {
         return "Port [portId=" + portId + ", protocol=" + protocol + "]";

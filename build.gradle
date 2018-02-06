@@ -3,7 +3,7 @@ apply plugin: 'maven'
 apply plugin: 'maven-publish'
 
 group = 'org.nmap4j'
-version = '1.0.7'
+version = '1.0.8'
 
 description = 'A Java nmap wrapper'
 
@@ -27,7 +27,7 @@ uploadArchives {
     uploadDescriptor = true
     repositories.mavenDeployer {
         repository(url: 'http://mavenrepo.vpc.iseticp.com:8888/repository/iseticrepo1/') {
-            authentication(userName: 'iseticdevel', password: '*******')
+            authentication(userName: 'iseticdevel', password: 'jfirt93@45thg2')
         }
     }
 }
