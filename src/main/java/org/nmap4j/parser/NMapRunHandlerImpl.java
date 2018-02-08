@@ -283,10 +283,7 @@ public class NMapRunHandlerImpl implements INMapRunHandler {
 
     @Override
     public Cpe createCpe(Attributes attributes) {
-        Cpe cpe = new Cpe();
-
-
-        return cpe;
+        return new Cpe();
     }
 
     private void noop() {
@@ -310,11 +307,12 @@ public class NMapRunHandlerImpl implements INMapRunHandler {
 
         hop.setTtl(Integer.parseInt(attributes.getValue(Hop.TTL_ATTR)));
         hop.setIpaddr(attributes.getValue(Hop.IPADDR_ATTR));
-        // en ocasiones nos encontramos con el valor "--"
-        try {
-            hop.setRtt(Float.parseFloat(attributes.getValue(Hop.RTT_ATTR)));
-        } catch (NumberFormatException e) {
-            logger.error("Bad rtt for hop", e);
+        String rtt = attributes.getValue(Hop.RTT_ATTR);
+        // sometimes we find "--" value
+        if ("--".equals(rtt)) {
+            logger.info("Bad rtt for hop --");
+        } else {
+            hop.setRtt(Float.parseFloat(rtt));
         }
 
         return hop;
@@ -322,9 +320,7 @@ public class NMapRunHandlerImpl implements INMapRunHandler {
 
     @Override
     public HostScript createHostScript(Attributes attributes) {
-        HostScript hostScript = new HostScript();
-
-        return hostScript;
+        return new HostScript();
     }
 
     @Override
