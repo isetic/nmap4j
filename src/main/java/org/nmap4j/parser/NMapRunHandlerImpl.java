@@ -60,289 +60,289 @@ import org.slf4j.LoggerFactory;
 import org.xml.sax.Attributes;
 
 public class NMapRunHandlerImpl implements INMapRunHandler {
-    private final org.slf4j.Logger logger = LoggerFactory.getLogger(Thread.currentThread().getStackTrace()[0].getClassName());
+	private final org.slf4j.Logger logger = LoggerFactory.getLogger(Thread.currentThread().getStackTrace()[0].getClassName());
 
-    public Address createAddress(Attributes attributes) {
-        Address address = new Address();
-        address.setAddr(attributes.getValue(Address.ADDR_ATTR));
-        address.setAddrtype(attributes.getValue(Address.ADDRTYPE_ATTR));
-        address.setVendor(attributes.getValue(Address.VENDOR_ATTR));
-        return address;
-    }
+	public Address createAddress(Attributes attributes) {
+		Address address = new Address();
+		address.setAddr(attributes.getValue(Address.ADDR_ATTR));
+		address.setAddrtype(attributes.getValue(Address.ADDRTYPE_ATTR));
+		address.setVendor(attributes.getValue(Address.VENDOR_ATTR));
+		return address;
+	}
 
-    public Debugging createDebugging(Attributes attributes) {
-        Debugging debugging = new Debugging();
-        debugging.setLevel(Long.parseLong(attributes.getValue(Debugging.LEVEL_TAG)));
-        return debugging;
-    }
+	public Debugging createDebugging(Attributes attributes) {
+		Debugging debugging = new Debugging();
+		debugging.setLevel(Long.parseLong(attributes.getValue(Debugging.LEVEL_TAG)));
+		return debugging;
+	}
 
-    public Distance createDistance(Attributes attributes) {
-        Distance distance = new Distance();
-        distance.setValue(Long.parseLong(attributes.getValue(Distance.VALUE_ATTR)));
-        return distance;
-    }
+	public Distance createDistance(Attributes attributes) {
+		Distance distance = new Distance();
+		distance.setValue(Long.parseLong(attributes.getValue(Distance.VALUE_ATTR)));
+		return distance;
+	}
 
-    public ExtraPorts createExtraPorts(Attributes attributes) {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	public ExtraPorts createExtraPorts(Attributes attributes) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-    public ExtraReasons createExtraReasons(Attributes attributes) {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	public ExtraReasons createExtraReasons(Attributes attributes) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-    public Host createHost(Attributes attributes) {
-        Host host = new Host();
-        if (attributes.getValue(Host.STARTTIME_ATTR) != null) {
-            host.setStartTime(Long.parseLong(attributes.getValue(Host.STARTTIME_ATTR)));
-        }
-        if (attributes.getValue(Host.ENDTIME_ATTR) != null) {
-            host.setEndTime(Long.parseLong(attributes.getValue(Host.ENDTIME_ATTR)));
-        }
+	public Host createHost(Attributes attributes) {
+		Host host = new Host();
+		if (attributes.getValue(Host.STARTTIME_ATTR) != null) {
+			host.setStartTime(Long.parseLong(attributes.getValue(Host.STARTTIME_ATTR)));
+		}
+		if (attributes.getValue(Host.ENDTIME_ATTR) != null) {
+			host.setEndTime(Long.parseLong(attributes.getValue(Host.ENDTIME_ATTR)));
+		}
 
-        return host;
-    }
+		return host;
+	}
 
-    public Hostnames createHostnames(Attributes attributes) {
-        return new Hostnames();
-    }
+	public Hostnames createHostnames(Attributes attributes) {
+		return new Hostnames();
+	}
 
-    public Hosts createHosts(Attributes attributes) {
-        Hosts hosts = new Hosts();
-        hosts.setDown(Long.parseLong(attributes.getValue(Hosts.DOWN_ATTR)));
-        hosts.setTotal(Long.parseLong(attributes.getValue(Hosts.TOTAL_ATTR)));
-        hosts.setUp(Long.parseLong(attributes.getValue(Hosts.UP_ATTR)));
+	public Hosts createHosts(Attributes attributes) {
+		Hosts hosts = new Hosts();
+		hosts.setDown(Long.parseLong(attributes.getValue(Hosts.DOWN_ATTR)));
+		hosts.setTotal(Long.parseLong(attributes.getValue(Hosts.TOTAL_ATTR)));
+		hosts.setUp(Long.parseLong(attributes.getValue(Hosts.UP_ATTR)));
 
-        return hosts;
-    }
+		return hosts;
+	}
 
-    public IpIdSequence createIpIdSequence(Attributes attributes) {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	public IpIdSequence createIpIdSequence(Attributes attributes) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-    public NMapRun createNMapRun(Attributes attributes) {
+	public NMapRun createNMapRun(Attributes attributes) {
 
-        NMapRun run = new NMapRun();
+		NMapRun run = new NMapRun();
 
-        run.setArgs(attributes.getValue(NMapRun.ARGS_ATTR));
-        run.setScanner(attributes.getValue(NMapRun.SCANNER_ATTR));
-        run.setStart(attributes.getValue(NMapRun.START_ATTR));
-        run.setStartstr(attributes.getValue(NMapRun.STARTSTR_ATTR));
-        run.setVersion(attributes.getValue(NMapRun.VERSION_ATTR));
-        run.setXmloutputversion(attributes.getValue(NMapRun.XML_OUTPUT_VERSION_ATTR));
+		run.setArgs(attributes.getValue(NMapRun.ARGS_ATTR));
+		run.setScanner(attributes.getValue(NMapRun.SCANNER_ATTR));
+		run.setStart(attributes.getValue(NMapRun.START_ATTR));
+		run.setStartstr(attributes.getValue(NMapRun.STARTSTR_ATTR));
+		run.setVersion(attributes.getValue(NMapRun.VERSION_ATTR));
+		run.setXmloutputversion(attributes.getValue(NMapRun.XML_OUTPUT_VERSION_ATTR));
 
-        return run;
-    }
+		return run;
+	}
 
-    public Os createOs(Attributes attributes) {
-        return new Os();
-    }
+	public Os createOs(Attributes attributes) {
+		return new Os();
+	}
 
-    public OsClass createOsClass(Attributes attributes) {
-        OsClass osClass = new OsClass();
-        osClass.setAccuracy(attributes.getValue(OsClass.ACCURACY_ATTR));
-        osClass.setOsfamily(attributes.getValue(OsClass.OSFAMILY_ATTR));
-        osClass.setOsgen(attributes.getValue(OsClass.OSGEN_ATTR));
-        osClass.setType(attributes.getValue(OsClass.TYPE_ATTR));
-        osClass.setVendor(attributes.getValue(OsClass.VENDOR_ATTR));
+	public OsClass createOsClass(Attributes attributes) {
+		OsClass osClass = new OsClass();
+		osClass.setAccuracy(attributes.getValue(OsClass.ACCURACY_ATTR));
+		osClass.setOsfamily(attributes.getValue(OsClass.OSFAMILY_ATTR));
+		osClass.setOsgen(attributes.getValue(OsClass.OSGEN_ATTR));
+		osClass.setType(attributes.getValue(OsClass.TYPE_ATTR));
+		osClass.setVendor(attributes.getValue(OsClass.VENDOR_ATTR));
 
-        return osClass;
-    }
+		return osClass;
+	}
 
-    public OsMatch createOsMatch(Attributes attributes) {
-        OsMatch osMatch = new OsMatch();
-        osMatch.setAccuracy(attributes.getValue(OsMatch.ACCURACY_ATTR));
-        osMatch.setLine(attributes.getValue(OsMatch.LINE_ATTR));
-        osMatch.setName(attributes.getValue(OsMatch.NAME_ATTR));
-        return osMatch;
-    }
+	public OsMatch createOsMatch(Attributes attributes) {
+		OsMatch osMatch = new OsMatch();
+		osMatch.setAccuracy(attributes.getValue(OsMatch.ACCURACY_ATTR));
+		osMatch.setLine(attributes.getValue(OsMatch.LINE_ATTR));
+		osMatch.setName(attributes.getValue(OsMatch.NAME_ATTR));
+		return osMatch;
+	}
 
-    public Port createPort(Attributes attributes) {
-        Port port = new Port();
-        port.setPortId(Long.parseLong(attributes.getValue(Port.PORTID_ATTR)));
-        port.setProtocol(attributes.getValue(Port.PROTOCOL_ATTR));
-        return port;
-    }
+	public Port createPort(Attributes attributes) {
+		Port port = new Port();
+		port.setPortId(Long.parseLong(attributes.getValue(Port.PORTID_ATTR)));
+		port.setProtocol(attributes.getValue(Port.PROTOCOL_ATTR));
+		return port;
+	}
 
-    public PortUsed createPortUsed(Attributes attributes) {
-        PortUsed portUsed = new PortUsed();
-        portUsed.setPortid(attributes.getValue(PortUsed.PORTID_ATTR));
-        portUsed.setProto(attributes.getValue(PortUsed.PROTO_ATTR));
-        portUsed.setState(attributes.getValue(PortUsed.STATE_ATTR));
-        return portUsed;
-    }
+	public PortUsed createPortUsed(Attributes attributes) {
+		PortUsed portUsed = new PortUsed();
+		portUsed.setPortid(attributes.getValue(PortUsed.PORTID_ATTR));
+		portUsed.setProto(attributes.getValue(PortUsed.PROTO_ATTR));
+		portUsed.setState(attributes.getValue(PortUsed.STATE_ATTR));
+		return portUsed;
+	}
 
-    public Ports createPorts(Attributes attributes) {
-        return new Ports();
-    }
+	public Ports createPorts(Attributes attributes) {
+		return new Ports();
+	}
 
-    public RunStats createRunStats(Attributes attributes) {
-        return new RunStats();
-    }
+	public RunStats createRunStats(Attributes attributes) {
+		return new RunStats();
+	}
 
-    public ScanInfo createScanInfo(Attributes attributes) {
-        ScanInfo scan = new ScanInfo();
+	public ScanInfo createScanInfo(Attributes attributes) {
+		ScanInfo scan = new ScanInfo();
 
-        scan.setNumservices(Long.parseLong(
-                attributes.getValue(ScanInfo.NUM_SERVICES_ATTR)));
-        scan.setProtocol(attributes.getValue(ScanInfo.PROTOCOL_ATTR));
-        scan.setServices(attributes.getValue(ScanInfo.SERVICES_ATTR));
-        scan.setType(attributes.getValue(ScanInfo.TYPE_ATTR));
+		scan.setNumservices(Long.parseLong(
+				attributes.getValue(ScanInfo.NUM_SERVICES_ATTR)));
+		scan.setProtocol(attributes.getValue(ScanInfo.PROTOCOL_ATTR));
+		scan.setServices(attributes.getValue(ScanInfo.SERVICES_ATTR));
+		scan.setType(attributes.getValue(ScanInfo.TYPE_ATTR));
 
-        return scan;
-    }
+		return scan;
+	}
 
-    public Service createService(Attributes attributes) {
-        Service service = new Service();
-        service.setConf(attributes.getValue(Service.CONF_ATTR));
-        service.setExtrainfo(attributes.getValue(Service.EXTRA_INFO_ATTR));
-        service.setMethod(attributes.getValue(Service.METHOD_ATTR));
-        service.setName(attributes.getValue(Service.NAME_ATTR));
-        service.setOsType(attributes.getValue(Service.OS_TYPE_ATTR));
-        service.setProduct(attributes.getValue(Service.PRODUCT_ATTR));
-        service.setVersion(attributes.getValue(Service.VERSION_ATTR));
-        return service;
-    }
+	public Service createService(Attributes attributes) {
+		Service service = new Service();
+		service.setConf(attributes.getValue(Service.CONF_ATTR));
+		service.setExtrainfo(attributes.getValue(Service.EXTRA_INFO_ATTR));
+		service.setMethod(attributes.getValue(Service.METHOD_ATTR));
+		service.setName(attributes.getValue(Service.NAME_ATTR));
+		service.setOsType(attributes.getValue(Service.OS_TYPE_ATTR));
+		service.setProduct(attributes.getValue(Service.PRODUCT_ATTR));
+		service.setVersion(attributes.getValue(Service.VERSION_ATTR));
+		return service;
+	}
 
-    public State createState(Attributes attributes) {
-        State state = new State();
-        state.setState(attributes.getValue(State.STATE_ATTR));
-        state.setReason(attributes.getValue(State.REASON_ATTR));
-        state.setReason_ttl(Long.parseLong(attributes.getValue(State.REASON_TTL_ATTR)));
+	public State createState(Attributes attributes) {
+		State state = new State();
+		state.setState(attributes.getValue(State.STATE_ATTR));
+		state.setReason(attributes.getValue(State.REASON_ATTR));
+		state.setReason_ttl(Long.parseLong(attributes.getValue(State.REASON_TTL_ATTR)));
 
-        return state;
-    }
+		return state;
+	}
 
-    public Status createStatus(Attributes attributes) {
-        Status status = new Status();
-        status.setReason(attributes.getValue(Status.REASON_ATTR));
-        status.setState(attributes.getValue(Status.STATE_ATTR));
-        return status;
-    }
+	public Status createStatus(Attributes attributes) {
+		Status status = new Status();
+		status.setReason(attributes.getValue(Status.REASON_ATTR));
+		status.setState(attributes.getValue(Status.STATE_ATTR));
+		return status;
+	}
 
-    public TcpSequence createTcpSequence(Attributes attributes) {
-        TcpSequence tcpSequence = new TcpSequence();
-        tcpSequence.setDifficulty(attributes.getValue(TcpSequence.DIFFICULTY_ATTR));
-        tcpSequence.setIndex(Long.parseLong(attributes.getValue(TcpSequence.INDEX_ATTR)));
-        tcpSequence.setValues(attributes.getValue(TcpSequence.VALUES_ATTR));
+	public TcpSequence createTcpSequence(Attributes attributes) {
+		TcpSequence tcpSequence = new TcpSequence();
+		tcpSequence.setDifficulty(attributes.getValue(TcpSequence.DIFFICULTY_ATTR));
+		tcpSequence.setIndex(Long.parseLong(attributes.getValue(TcpSequence.INDEX_ATTR)));
+		tcpSequence.setValues(attributes.getValue(TcpSequence.VALUES_ATTR));
 
 
-        return tcpSequence;
-    }
+		return tcpSequence;
+	}
 
-    public TcpTsSequence createTcpTsSequence(Attributes attributes) {
-        TcpTsSequence tcpTsSequence = new TcpTsSequence();
-        tcpTsSequence.setaClass(attributes.getValue(TcpTsSequence.CLASS_ATTR));
-        tcpTsSequence.setValues(attributes.getValue(TcpTsSequence.VALUES_ATTR));
-        return tcpTsSequence;
-    }
+	public TcpTsSequence createTcpTsSequence(Attributes attributes) {
+		TcpTsSequence tcpTsSequence = new TcpTsSequence();
+		tcpTsSequence.setaClass(attributes.getValue(TcpTsSequence.CLASS_ATTR));
+		tcpTsSequence.setValues(attributes.getValue(TcpTsSequence.VALUES_ATTR));
+		return tcpTsSequence;
+	}
 
-    public Times createTimes(Attributes attributes) {
-        Times times = new Times();
-        times.setRttvar(Long.parseLong(attributes.getValue(Times.RTTVAR_ATTR)));
-        times.setSrtt(Long.parseLong(attributes.getValue(Times.SRTT_ATTR)));
-        times.setTo(Long.parseLong(attributes.getValue(Times.TO_ATTR)));
+	public Times createTimes(Attributes attributes) {
+		Times times = new Times();
+		times.setRttvar(Long.parseLong(attributes.getValue(Times.RTTVAR_ATTR)));
+		times.setSrtt(Long.parseLong(attributes.getValue(Times.SRTT_ATTR)));
+		times.setTo(Long.parseLong(attributes.getValue(Times.TO_ATTR)));
 
-        return times;
-    }
+		return times;
+	}
 
-    public Uptime createUptime(Attributes attributes) {
-        Uptime uptime = new Uptime();
-        uptime.setLastboot(attributes.getValue(Uptime.LASTBOOT_ATTR));
-        if (attributes.getValue(Uptime.UPTIME_TAG) != null) {
-            uptime.setSeconds(Long.parseLong(attributes.getValue(Uptime.UPTIME_TAG)));
-        }
+	public Uptime createUptime(Attributes attributes) {
+		Uptime uptime = new Uptime();
+		uptime.setLastboot(attributes.getValue(Uptime.LASTBOOT_ATTR));
+		if (attributes.getValue(Uptime.UPTIME_TAG) != null) {
+			uptime.setSeconds(Long.parseLong(attributes.getValue(Uptime.UPTIME_TAG)));
+		}
 
-        return uptime;
-    }
+		return uptime;
+	}
 
-    public Verbose createVerbose(Attributes attributes) {
-        Verbose verbose = new Verbose();
-        verbose.setLevel(Long.parseLong(attributes.getValue(Verbose.LEVEL_ATTR)));
+	public Verbose createVerbose(Attributes attributes) {
+		Verbose verbose = new Verbose();
+		verbose.setLevel(Long.parseLong(attributes.getValue(Verbose.LEVEL_ATTR)));
 
-        return verbose;
-    }
+		return verbose;
+	}
 
-    public Finished createFinished(Attributes attributes) {
-        Finished finished = new Finished();
-        finished.setElapsed(attributes.getValue(Finished.ELAPSED_ATTR));
-        finished.setTime(attributes.getValue(Finished.TIME_ATTR));
-        finished.setTimestr(attributes.getValue(Finished.TIMESTR_ATTR));
+	public Finished createFinished(Attributes attributes) {
+		Finished finished = new Finished();
+		finished.setElapsed(attributes.getValue(Finished.ELAPSED_ATTR));
+		finished.setTime(attributes.getValue(Finished.TIME_ATTR));
+		finished.setTimestr(attributes.getValue(Finished.TIMESTR_ATTR));
 
-        return finished;
-    }
+		return finished;
+	}
 
-    public Hostname createHostname(Attributes attributes) {
-        Hostname hostname = new Hostname();
-        hostname.setName(attributes.getValue(Hostname.NAME_ATTR));
-        hostname.setType(attributes.getValue(Hostname.TYPE_ATTR));
-        return hostname;
-    }
+	public Hostname createHostname(Attributes attributes) {
+		Hostname hostname = new Hostname();
+		hostname.setName(attributes.getValue(Hostname.NAME_ATTR));
+		hostname.setType(attributes.getValue(Hostname.TYPE_ATTR));
+		return hostname;
+	}
 
-    @Override
-    public Cpe createCpe(Attributes attributes) {
-        return new Cpe();
-    }
+	@Override
+	public Cpe createCpe(Attributes attributes) {
+		return new Cpe();
+	}
 
-    private void noop() {
+	private void noop() {
 
-    }
+	}
 
-    public Trace createTrace(Attributes attributes) {
-        Trace trace = new Trace();
+	public Trace createTrace(Attributes attributes) {
+		Trace trace = new Trace();
 
-        String portValue = attributes.getValue(Trace.PORT_ATTR);
-        if (portValue != null)
-            trace.setPort(Long.parseLong(portValue));
-        String protValue = attributes.getValue(Trace.PORTOCOL_ATTR);
-        if (protValue != null)
-            trace.setProtocol(protValue);
-        return trace;
-    }
+		String portValue = attributes.getValue(Trace.PORT_ATTR);
+		if (portValue != null)
+			trace.setPort(Long.parseLong(portValue));
+		String protValue = attributes.getValue(Trace.PORTOCOL_ATTR);
+		if (protValue != null)
+			trace.setProtocol(protValue);
+		return trace;
+	}
 
-    public Hop createHop(Attributes attributes) {
-        Hop hop = new Hop();
+	public Hop createHop(Attributes attributes) {
+		Hop hop = new Hop();
 
-        hop.setTtl(Integer.parseInt(attributes.getValue(Hop.TTL_ATTR)));
-        hop.setIpaddr(attributes.getValue(Hop.IPADDR_ATTR));
-        String rtt = attributes.getValue(Hop.RTT_ATTR);
-        // sometimes we find "--" value
-        if ("--".equals(rtt)) {
-            logger.info("Bad rtt for hop --");
-        } else {
-            hop.setRtt(Float.parseFloat(rtt));
-        }
+		hop.setTtl(Integer.parseInt(attributes.getValue(Hop.TTL_ATTR)));
+		hop.setIpaddr(attributes.getValue(Hop.IPADDR_ATTR));
+		String rtt = attributes.getValue(Hop.RTT_ATTR);
+		// sometimes we find "--" value
+		if ("--".equals(rtt)) {
+			logger.info("Bad rtt for hop --");
+		} else {
+			hop.setRtt(Float.parseFloat(rtt));
+		}
 
-        return hop;
-    }
+		return hop;
+	}
 
-    @Override
-    public HostScript createHostScript(Attributes attributes) {
-        return new HostScript();
-    }
+	@Override
+	public HostScript createHostScript(Attributes attributes) {
+		return new HostScript();
+	}
 
-    @Override
-    public Script createScript(Attributes attributes) {
-        Script script = new Script();
-        int ll = attributes.getLength();
-        for (int cont = 0; cont < ll; cont++) {
-            String value = attributes.getValue(cont);
-            String name = attributes.getQName(cont);
-            String type = attributes.getType(cont);
-            String localName = attributes.getLocalName(cont);
-            String uri = attributes.getURI(cont);
-            if (name.equals("id")) {
-                script.setId(value);
-            } else if (name.equals("output")) {
-                script.setOutput(value);
-            } else {
-                throw new RuntimeException();
-            }
-            noop();
-        }
-        return script;
-    }
+	@Override
+	public Script createScript(Attributes attributes) {
+		Script script = new Script();
+		int ll = attributes.getLength();
+		for (int cont = 0; cont < ll; cont++) {
+			String value = attributes.getValue(cont);
+			String name = attributes.getQName(cont);
+			String type = attributes.getType(cont);
+			String localName = attributes.getLocalName(cont);
+			String uri = attributes.getURI(cont);
+			if (name.equals("id")) {
+				script.setId(value);
+			} else if (name.equals("output")) {
+				script.setOutput(value);
+			} else {
+				throw new RuntimeException();
+			}
+			noop();
+		}
+		return script;
+	}
 
 }
