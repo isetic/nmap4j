@@ -18,52 +18,52 @@ import java.io.InputStream;
 
 public class NMapXmlHandlerTest implements IConstants {
 
-    @Test
-    public void basicTest() {
+	@Test
+	public void basicTest() {
 
 
-        INMapRunHandler nmrh = new NMapRunHandlerImpl();
-        NMapXmlHandler nmxh = new NMapXmlHandler(nmrh);
+		INMapRunHandler nmrh = new NMapRunHandlerImpl();
+		NMapXmlHandler nmxh = new NMapXmlHandler(nmrh);
 
-        TestListener listener = new TestListener();
+		TestListener listener = new TestListener();
 
-        NMapXmlHandler.addListener(listener);
+		NMapXmlHandler.addListener(listener);
 
-        SAXParserFactory spf = SAXParserFactory.newInstance();
-        try {
+		SAXParserFactory spf = SAXParserFactory.newInstance();
+		try {
 
-            //get a new instance of parser
-            SAXParser sp = spf.newSAXParser();
+			//get a new instance of parser
+			SAXParser sp = spf.newSAXParser();
 
-            // get the ms-vscan.xml as a stream
-            InputStream in = getClass().getClassLoader().getResourceAsStream(NmapDataSamples.fileName);
+			// get the ms-vscan.xml as a stream
+			InputStream in = getClass().getClassLoader().getResourceAsStream(NmapDataSamples.fileName);
 
-            //parse the file and also register this class for call backs
-            sp.parse(in, nmxh);
+			//parse the file and also register this class for call backs
+			sp.parse(in, nmxh);
 
-        } catch (SAXException se) {
-            se.printStackTrace();
-        } catch (ParserConfigurationException pce) {
-            pce.printStackTrace();
-        } catch (IOException ie) {
-            ie.printStackTrace();
-        }
+		} catch (SAXException se) {
+			se.printStackTrace();
+		} catch (ParserConfigurationException pce) {
+			pce.printStackTrace();
+		} catch (IOException ie) {
+			ie.printStackTrace();
+		}
 
-        System.out.println("\n\n exec time: " + nmxh.getExecTime() + "ms");
-    }
-
-
-    private class TestListener implements NMap4JParserEventListener {
+		System.out.println("\n\n exec time: " + nmxh.getExecTime() + "ms");
+	}
 
 
-        @Override
-        public void parseEventNotification(ParserEvent event) {
-            //System.out.println( "source = " + event.getEventSource() ) ;
-            if (event.getPayload() == null) {
-                Assert.fail();
-            }
-        }
+	private class TestListener implements NMap4JParserEventListener {
 
-    }
+
+		@Override
+		public void parseEventNotification(ParserEvent event) {
+			//System.out.println( "source = " + event.getEventSource() ) ;
+			if (event.getPayload() == null) {
+				Assert.fail();
+			}
+		}
+
+	}
 
 }
