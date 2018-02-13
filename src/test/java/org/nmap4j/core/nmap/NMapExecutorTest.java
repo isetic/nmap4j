@@ -35,7 +35,7 @@ public class NMapExecutorTest {
 		boolean hasFailed = false;
 		// expect this to throw an exception
 		try {
-			NMapExecutor nmapExec = new NMapExecutor(null, null);
+			NMapExecutor nmapExec = new NMapExecutor( null, null );
 		} catch (NMapInitializationException e) {
 			// this is what I would expect to happen
 			hasFailed = true;
@@ -55,7 +55,7 @@ public class NMapExecutorTest {
 		boolean hasFailed = false;
 		// expect this to throw an exception
 		try {
-			NMapExecutor nmapExec = new NMapExecutor(nmapArgs, nmapProps);
+			NMapExecutor nmapExec = new NMapExecutor( nmapArgs, nmapProps );
 		} catch (NMapInitializationException e) {
 			// this is what I would expect to happen
 			hasFailed = true;
@@ -68,12 +68,12 @@ public class NMapExecutorTest {
 
 	@Test
 	public void testZeroLengthNMapPath() {
-		nmapProps.setPath("");
+		nmapProps.setPath( "" );
 
 		boolean hasFailed = false;
 		// expect this to throw an exception
 		try {
-			NMapExecutor nmapExec = new NMapExecutor(nmapArgs, nmapProps);
+			NMapExecutor nmapExec = new NMapExecutor( nmapArgs, nmapProps );
 		} catch (NMapInitializationException e) {
 			// this is what I would expect to happen
 			hasFailed = true;
@@ -87,18 +87,18 @@ public class NMapExecutorTest {
 	@Test
 	public void testExecuteMethodWithoutSudo() throws NMapInitializationException, NMapExecutionException {
 
-		nmapProps.setPath(NmapTestUtils.findNmapPath());
+		nmapProps.setPath( NmapTestUtils.findNmapPath() );
 
-		nmapArgs.addFlag(Flag.AGGRESIVE_TIMING);
-		nmapArgs.addFlag(Flag.VERSION);
-		nmapArgs.addFlag(Flag.OS_DETECTION);
+		nmapArgs.addFlag( Flag.AGGRESIVE_TIMING );
+		nmapArgs.addFlag( Flag.VERSION );
+		nmapArgs.addFlag( Flag.OS_DETECTION );
 
-		nmapArgs.addIncludedHost("localhost");
+		nmapArgs.addIncludedHost( "localhost" );
 
 
-		NMapExecutor nmapExec = new NMapExecutor(nmapArgs, nmapProps);
+		NMapExecutor nmapExec = new NMapExecutor( nmapArgs, nmapProps );
 		ExecutionResults results = nmapExec.execute();
-		System.out.println(results.getOutput());
+		System.out.println( results.getOutput() );
 
 	}
 
