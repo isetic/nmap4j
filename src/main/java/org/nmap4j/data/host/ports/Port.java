@@ -58,31 +58,24 @@ public class Port {
 	public String getProtocol() {
 		return protocol;
 	}
-
 	public void setProtocol(String protocol) {
 		this.protocol = protocol;
 	}
-
 	public long getPortId() {
 		return portId;
 	}
-
 	public void setPortId(long portId) {
 		this.portId = portId;
 	}
-
 	public State getState() {
 		return state;
 	}
-
 	public void setState(State state) {
 		this.state = state;
 	}
-
 	public Service getService() {
 		return service;
 	}
-
 	public void setService(Service service) {
 		this.service = service;
 	}
