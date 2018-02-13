@@ -76,401 +76,401 @@ import java.util.List;
  */
 public class NMapXmlHandler extends DefaultHandler {
 
-    private static List<NMap4JParserEventListener> listeners;
-    private static boolean processHostScripts = true;
+	private static List<NMap4JParserEventListener> listeners;
+	private static boolean processHostScripts = true;
 
-    private INMapRunHandler runHandler;
+	private INMapRunHandler runHandler;
 
-    private long parseStartTime = 0;
+	private long parseStartTime = 0;
 
-    private long parseEndTime = 0;
+	private long parseEndTime = 0;
 
-    // private member variables for creating the hierarchy
-    private NMapRun nmapRun;
-    private ScanInfo scanInfo;
-    private Debugging debugging;
-    private Verbose verbose;
-    private Host host;
-    private Status status;
-    private Address address;
-    private Hostnames hostnames;
-    private Hostname hostname;
-    private Ports ports;
-    private Port port;
-    private State state;
-    private Service service;
-    private Os os;
-    private PortUsed portUsed;
-    private OsClass osClass;
-    private OsMatch osMatch;
-    private Distance distance;
-    private TcpSequence tcpSequence;
-    private TcpTsSequence tcpTsSequence;
-    private Times times;
-    private Uptime uptime;
-    private RunStats runStats;
-    private Finished finished;
-    private Hosts hosts;
-    private Cpe cpe;
-    private Trace trace;
-    private Hop hop;
-    private HostScript hostScript;
-    private Script script;
-    private String elemkey;
+	// private member variables for creating the hierarchy
+	private NMapRun nmapRun;
+	private ScanInfo scanInfo;
+	private Debugging debugging;
+	private Verbose verbose;
+	private Host host;
+	private Status status;
+	private Address address;
+	private Hostnames hostnames;
+	private Hostname hostname;
+	private Ports ports;
+	private Port port;
+	private State state;
+	private Service service;
+	private Os os;
+	private PortUsed portUsed;
+	private OsClass osClass;
+	private OsMatch osMatch;
+	private Distance distance;
+	private TcpSequence tcpSequence;
+	private TcpTsSequence tcpTsSequence;
+	private Times times;
+	private Uptime uptime;
+	private RunStats runStats;
+	private Finished finished;
+	private Hosts hosts;
+	private Cpe cpe;
+	private Trace trace;
+	private Hop hop;
+	private HostScript hostScript;
+	private Script script;
+	private String elemkey;
 
-    private boolean isCpeData = false;
+	private boolean isCpeData = false;
 
-    private String previousQName;
+	private String previousQName;
 
-    public NMapXmlHandler(INMapRunHandler handler) {
-        listeners = new ArrayList<NMap4JParserEventListener>();
-        runHandler = handler;
-    }
+	public NMapXmlHandler(INMapRunHandler handler) {
+		listeners = new ArrayList<NMap4JParserEventListener>();
+		runHandler = handler;
+	}
 
-    private void fireEvent(Object payload) {
-        ParserEvent event = new ParserEvent(this, payload);
-        if (listeners != null && listeners.size() > 0) {
-            Iterator<NMap4JParserEventListener> listenersIterator = listeners.iterator();
-            while (listenersIterator.hasNext()) {
-                NMap4JParserEventListener listener = listenersIterator.next();
-                if (listener != null) {
-                    listener.parseEventNotification(event);
-                }
-            }
-        }
-    }
+	private void fireEvent(Object payload) {
+		ParserEvent event = new ParserEvent(this, payload);
+		if (listeners != null && listeners.size() > 0) {
+			Iterator<NMap4JParserEventListener> listenersIterator = listeners.iterator();
+			while (listenersIterator.hasNext()) {
+				NMap4JParserEventListener listener = listenersIterator.next();
+				if (listener != null) {
+					listener.parseEventNotification(event);
+				}
+			}
+		}
+	}
 
-    public static void addListener(NMap4JParserEventListener listener) {
-        if (listeners == null) {
-            listeners = new ArrayList<NMap4JParserEventListener>();
-        }
-        listeners.add(listener);
-    }
+	public static void addListener(NMap4JParserEventListener listener) {
+		if (listeners == null) {
+			listeners = new ArrayList<NMap4JParserEventListener>();
+		}
+		listeners.add(listener);
+	}
 
-    public static void removeListener(NMap4JParserEventListener listener) {
-        listeners.remove(listener);
-    }
+	public static void removeListener(NMap4JParserEventListener listener) {
+		listeners.remove(listener);
+	}
 
-    @Override
-    public void startDocument() throws SAXException {
-        parseStartTime = System.currentTimeMillis();
-    }
+	@Override
+	public void startDocument() throws SAXException {
+		parseStartTime = System.currentTimeMillis();
+	}
 
-    private void noop() {
-    }
+	private void noop() {
+	}
 
-    @Override
-    public void startElement(String uri, String localName, String qName,
-                             Attributes attributes) throws SAXException {
+	@Override
+	public void startElement(String uri, String localName, String qName,
+							 Attributes attributes) throws SAXException {
 
-        if (qName.equals(NMapRun.NMAPRUN_TAG)) {
-            nmapRun = runHandler.createNMapRun(attributes);
-        }
-        if (qName.equals(ScanInfo.SCANINFO_TAG)) {
-            scanInfo = runHandler.createScanInfo(attributes);
-            nmapRun.setScanInfo(scanInfo);
-        }
-        if (qName.equals(Debugging.DEBUGGING_TAG)) {
-            debugging = runHandler.createDebugging(attributes);
-            nmapRun.setDebugging(debugging);
-        }
-        if (qName.equals(Verbose.VERBOSE_TAG)) {
-            verbose = runHandler.createVerbose(attributes);
-            nmapRun.setVerbose(verbose);
-        }
-        if (qName.equals(Host.HOST_TAG)) {
-            host = runHandler.createHost(attributes);
-            nmapRun.addHost(host);
-        }
-        if (qName.equals(Status.STATUS_TAG)) {
-            status = runHandler.createStatus(attributes);
-            host.setStatus(status);
-        }
-        if (qName.equals(Address.ADDRESS_TAG)) {
-            address = runHandler.createAddress(attributes);
-            host.addAddress(address);
-        }
-        if (qName.equals(Hostnames.HOSTNAMES_TAG)) {
-            hostnames = runHandler.createHostnames(attributes);
-            host.setHostnames(hostnames);
-        }
-        if (qName.equals(Hostname.HOSTNAME_TAG)) {
-            hostname = runHandler.createHostname(attributes);
-            hostnames.setHostname(hostname);
-        }
-        if (qName.equals(Ports.PORTS_TAG)) {
-            ports = runHandler.createPorts(attributes);
-            host.setPorts(ports);
-        }
-        if (qName.equals(Port.PORT_TAG)) {
-            port = runHandler.createPort(attributes);
-            ports.addPort(port);
-        }
-        if (qName.equals(State.STATE_TAG)) {
-            state = runHandler.createState(attributes);
-            port.setState(state);
-        }
-        if (qName.equals(Service.SERVICE_TAG)) {
-            service = runHandler.createService(attributes);
-            port.setService(service);
-        }
-        if (qName.equals(Os.OS_TAG)) {
-            os = runHandler.createOs(attributes);
-            host.setOs(os);
-        }
-        if (qName.equals(PortUsed.PORT_USED_TAG)) {
-            portUsed = runHandler.createPortUsed(attributes);
-            os.addPortUsed(portUsed);
-        }
-        if (qName.equals(OsClass.OSCLASS_TAG)) {
-            osClass = runHandler.createOsClass(attributes);
-            os.addOsClass(osClass);
-        }
-        if (qName.equals(OsMatch.OS_MATCH_TAG)) {
-            osMatch = runHandler.createOsMatch(attributes);
-            os.addOsMatch(osMatch);
-        }
-        if (qName.equals(Distance.DISTANCE_TAG)) {
-            distance = runHandler.createDistance(attributes);
-            host.setDistance(distance);
-        }
-        if (qName.equals(TcpSequence.TCP_SEQUENCE_TAG)) {
-            tcpSequence = runHandler.createTcpSequence(attributes);
-            host.setTcpSequence(tcpSequence);
-        }
-        if (qName.equals(TcpTsSequence.TCP_TS_SEQUENCE_TAG)) {
-            tcpTsSequence = runHandler.createTcpTsSequence(attributes);
-            host.setTcpTsSequence(tcpTsSequence);
-        }
-        if (qName.equals(Times.TIMES_TAG)) {
-            times = runHandler.createTimes(attributes);
-            host.setTimes(times);
-        }
-        if (qName.equals(Uptime.UPTIME_TAG)) {
-            uptime = runHandler.createUptime(attributes);
-            host.setUptime(uptime);
-        }
-        if (qName.equals(RunStats.RUNSTATS_TAG)) {
-            runStats = runHandler.createRunStats(attributes);
-            nmapRun.setRunStats(runStats);
-        }
-        if (qName.equals(Finished.FINISHED_TAG)) {
-            finished = runHandler.createFinished(attributes);
-            runStats.setFinished(finished);
-        }
-        if (qName.equals(Hosts.HOSTS_TAG)) {
-            hosts = runHandler.createHosts(attributes);
-            runStats.setHosts(hosts);
-        }
-        if (qName.equals(Cpe.CPE_ATTR)) {
-            isCpeData = true;
-            cpe = runHandler.createCpe(attributes);
-            if (previousQName.equals(OsClass.OSCLASS_TAG)) {
-                osClass.addCpe(cpe);
-            } else if (previousQName.equals(Service.SERVICE_TAG)) {
+		if (qName.equals(NMapRun.NMAPRUN_TAG)) {
+			nmapRun = runHandler.createNMapRun(attributes);
+		}
+		if (qName.equals(ScanInfo.SCANINFO_TAG)) {
+			scanInfo = runHandler.createScanInfo(attributes);
+			nmapRun.setScanInfo(scanInfo);
+		}
+		if (qName.equals(Debugging.DEBUGGING_TAG)) {
+			debugging = runHandler.createDebugging(attributes);
+			nmapRun.setDebugging(debugging);
+		}
+		if (qName.equals(Verbose.VERBOSE_TAG)) {
+			verbose = runHandler.createVerbose(attributes);
+			nmapRun.setVerbose(verbose);
+		}
+		if (qName.equals(Host.HOST_TAG)) {
+			host = runHandler.createHost(attributes);
+			nmapRun.addHost(host);
+		}
+		if (qName.equals(Status.STATUS_TAG)) {
+			status = runHandler.createStatus(attributes);
+			host.setStatus(status);
+		}
+		if (qName.equals(Address.ADDRESS_TAG)) {
+			address = runHandler.createAddress(attributes);
+			host.addAddress(address);
+		}
+		if (qName.equals(Hostnames.HOSTNAMES_TAG)) {
+			hostnames = runHandler.createHostnames(attributes);
+			host.setHostnames(hostnames);
+		}
+		if (qName.equals(Hostname.HOSTNAME_TAG)) {
+			hostname = runHandler.createHostname(attributes);
+			hostnames.setHostname(hostname);
+		}
+		if (qName.equals(Ports.PORTS_TAG)) {
+			ports = runHandler.createPorts(attributes);
+			host.setPorts(ports);
+		}
+		if (qName.equals(Port.PORT_TAG)) {
+			port = runHandler.createPort(attributes);
+			ports.addPort(port);
+		}
+		if (qName.equals(State.STATE_TAG)) {
+			state = runHandler.createState(attributes);
+			port.setState(state);
+		}
+		if (qName.equals(Service.SERVICE_TAG)) {
+			service = runHandler.createService(attributes);
+			port.setService(service);
+		}
+		if (qName.equals(Os.OS_TAG)) {
+			os = runHandler.createOs(attributes);
+			host.setOs(os);
+		}
+		if (qName.equals(PortUsed.PORT_USED_TAG)) {
+			portUsed = runHandler.createPortUsed(attributes);
+			os.addPortUsed(portUsed);
+		}
+		if (qName.equals(OsClass.OSCLASS_TAG)) {
+			osClass = runHandler.createOsClass(attributes);
+			os.addOsClass(osClass);
+		}
+		if (qName.equals(OsMatch.OS_MATCH_TAG)) {
+			osMatch = runHandler.createOsMatch(attributes);
+			os.addOsMatch(osMatch);
+		}
+		if (qName.equals(Distance.DISTANCE_TAG)) {
+			distance = runHandler.createDistance(attributes);
+			host.setDistance(distance);
+		}
+		if (qName.equals(TcpSequence.TCP_SEQUENCE_TAG)) {
+			tcpSequence = runHandler.createTcpSequence(attributes);
+			host.setTcpSequence(tcpSequence);
+		}
+		if (qName.equals(TcpTsSequence.TCP_TS_SEQUENCE_TAG)) {
+			tcpTsSequence = runHandler.createTcpTsSequence(attributes);
+			host.setTcpTsSequence(tcpTsSequence);
+		}
+		if (qName.equals(Times.TIMES_TAG)) {
+			times = runHandler.createTimes(attributes);
+			host.setTimes(times);
+		}
+		if (qName.equals(Uptime.UPTIME_TAG)) {
+			uptime = runHandler.createUptime(attributes);
+			host.setUptime(uptime);
+		}
+		if (qName.equals(RunStats.RUNSTATS_TAG)) {
+			runStats = runHandler.createRunStats(attributes);
+			nmapRun.setRunStats(runStats);
+		}
+		if (qName.equals(Finished.FINISHED_TAG)) {
+			finished = runHandler.createFinished(attributes);
+			runStats.setFinished(finished);
+		}
+		if (qName.equals(Hosts.HOSTS_TAG)) {
+			hosts = runHandler.createHosts(attributes);
+			runStats.setHosts(hosts);
+		}
+		if (qName.equals(Cpe.CPE_ATTR)) {
+			isCpeData = true;
+			cpe = runHandler.createCpe(attributes);
+			if (previousQName.equals(OsClass.OSCLASS_TAG)) {
+				osClass.addCpe(cpe);
+			} else if (previousQName.equals(Service.SERVICE_TAG)) {
 
-            }
-        }
-        if (qName.equals(Trace.TRACE_TAG)) {
-            trace = runHandler.createTrace(attributes);
-            host.setTrace(trace);
-        }
-        if (qName.equals(Hop.HOP_TAG)) {
-            hop = runHandler.createHop(attributes);
-            trace.addHop(hop);
-        }
-        if (processHostScripts) {
-            if (qName.equals(HostScript.TAG)) {
-                this.hostScript = runHandler.createHostScript(attributes);
-                this.host.setHostScript(this.hostScript);
-            }
-            if (qName.equals(Script.TAG)) {
-                if (this.hostScript != null) {
-                    // There are mor tags named script that are not this case.
-                    this.script = runHandler.createScript(attributes);
-                    this.hostScript.addScript(this.script);
-                } else if (this.port != null) {
-                    this.script = runHandler.createScript(attributes);
-                    this.port.addScript(this.script);
-                }
-            }
-            if (qName.equals(Script.ELEMTAG)) {
-                if (this.elemkey != null) {
-                    throw new RuntimeException();
-                }
-                if (false && this.script == null) {
-                    // esto se puede encontrar en script y al menos en table, por lo que desactivo.
-                    throw new RuntimeException();
-                }
-                String elemKey = attributes.getValue("key");
-                this.elemkey = elemKey;
-            }
-        }
-        // set the previousQName for comparison to later elements
-        previousQName = qName;
-    }
+			}
+		}
+		if (qName.equals(Trace.TRACE_TAG)) {
+			trace = runHandler.createTrace(attributes);
+			host.setTrace(trace);
+		}
+		if (qName.equals(Hop.HOP_TAG)) {
+			hop = runHandler.createHop(attributes);
+			trace.addHop(hop);
+		}
+		if (processHostScripts) {
+			if (qName.equals(HostScript.TAG)) {
+				this.hostScript = runHandler.createHostScript(attributes);
+				this.host.setHostScript(this.hostScript);
+			}
+			if (qName.equals(Script.TAG)) {
+				if (this.hostScript != null) {
+					// There are mor tags named script that are not this case.
+					this.script = runHandler.createScript(attributes);
+					this.hostScript.addScript(this.script);
+				} else if (this.port != null) {
+					this.script = runHandler.createScript(attributes);
+					this.port.addScript(this.script);
+				}
+			}
+			if (qName.equals(Script.ELEMTAG)) {
+				if (this.elemkey != null) {
+					throw new RuntimeException();
+				}
+				if (false && this.script == null) {
+					// esto se puede encontrar en script y al menos en table, por lo que desactivo.
+					throw new RuntimeException();
+				}
+				String elemKey = attributes.getValue("key");
+				this.elemkey = elemKey;
+			}
+		}
+		// set the previousQName for comparison to later elements
+		previousQName = qName;
+	}
 
 
-    @Override
-    public void characters(char[] ch, int start, int length)
-            throws SAXException {
-        if (isCpeData) {
-            String cpeText = new String(ch, start, length);
-            cpe.setCpeData(cpeText);
-            isCpeData = false;
-        }
-        if (elemkey != null) {
-            String fragment = new String(ch, start, length);
-            if (this.script != null) {
-                this.script.addElem(this.elemkey, fragment);
-            }
-        }
-    }
+	@Override
+	public void characters(char[] ch, int start, int length)
+			throws SAXException {
+		if (isCpeData) {
+			String cpeText = new String(ch, start, length);
+			cpe.setCpeData(cpeText);
+			isCpeData = false;
+		}
+		if (elemkey != null) {
+			String fragment = new String(ch, start, length);
+			if (this.script != null) {
+				this.script.addElem(this.elemkey, fragment);
+			}
+		}
+	}
 
-    @Override
-    public void endElement(String uri, String localName, String qName)
-            throws SAXException {
-        if (qName.equals(NMapRun.NMAPRUN_TAG)) {
-            fireEvent(nmapRun);
-            nmapRun = null;
-        }
-        if (qName.equals(ScanInfo.SCANINFO_TAG)) {
-            fireEvent(scanInfo);
-            scanInfo = null;
-        }
-        if (qName.equals(Debugging.DEBUGGING_TAG)) {
-            fireEvent(debugging);
-            debugging = null;
-        }
-        if (qName.equals(Verbose.VERBOSE_TAG)) {
-            fireEvent(verbose);
-            verbose = null;
-        }
-        if (qName.equals(Host.HOST_TAG)) {
-            fireEvent(host);
-            host = null;
-        }
-        if (qName.equals(Status.STATUS_TAG)) {
-            fireEvent(status);
-            status = null;
-        }
-        if (qName.equals(Address.ADDRESS_TAG)) {
-            fireEvent(address);
-            address = null;
-        }
-        if (qName.equals(Hostname.HOSTNAME_TAG)) {
-            fireEvent(hostname);
-            hostname = null;
-        }
-        if (qName.equals(Hostnames.HOSTNAMES_TAG)) {
-            fireEvent(hostnames);
-            hostnames = null;
-        }
-        if (qName.equals(Ports.PORTS_TAG)) {
-            fireEvent(ports);
-            ports = null;
-        }
-        if (qName.equals(Port.PORT_TAG)) {
-            fireEvent(port);
-            port = null;
-        }
-        if (qName.equals(State.STATE_TAG)) {
-            fireEvent(state);
-            state = null;
-        }
-        if (qName.equals(Service.SERVICE_TAG)) {
-            fireEvent(service);
-            service = null;
-        }
-        if (qName.equals(Os.OS_TAG)) {
-            fireEvent(os);
-            os = null;
-        }
-        if (qName.equals(PortUsed.PORT_USED_TAG)) {
-            fireEvent(portUsed);
-            portUsed = null;
-        }
-        if (qName.equals(OsClass.OSCLASS_TAG)) {
-            fireEvent(osClass);
-            osClass = null;
-        }
-        if (qName.equals(OsMatch.OS_MATCH_TAG)) {
-            fireEvent(osMatch);
-            osMatch = null;
-        }
-        if (qName.equals(Distance.DISTANCE_TAG)) {
-            fireEvent(distance);
-            distance = null;
-        }
-        if (qName.equals(TcpSequence.TCP_SEQUENCE_TAG)) {
-            fireEvent(tcpSequence);
-            tcpSequence = null;
-        }
-        if (qName.equals(TcpTsSequence.TCP_TS_SEQUENCE_TAG)) {
-            fireEvent(tcpTsSequence);
-            tcpTsSequence = null;
-        }
-        if (qName.equals(Times.TIMES_TAG)) {
-            fireEvent(times);
-            times = null;
-        }
-        if (qName.equals(Uptime.UPTIME_TAG)) {
-            fireEvent(uptime);
-            uptime = null;
-        }
-        if (qName.equals(RunStats.RUNSTATS_TAG)) {
-            fireEvent(runStats);
-            runStats = null;
-        }
-        if (qName.equals(Finished.FINISHED_TAG)) {
-            fireEvent(finished);
-            finished = null;
-        }
-        if (qName.equals(Hosts.HOSTS_TAG)) {
-            fireEvent(hosts);
-            hosts = null;
-        }
-        if (qName.equals(Cpe.CPE_ATTR)) {
-            fireEvent(cpe);
-            cpe = null;
-        }
-        if (qName.equals(Trace.TRACE_TAG)) {
-            fireEvent(trace);
-            trace = null;
-        }
-        if (qName.equals(Hop.HOP_TAG)) {
-            fireEvent(hop);
-            hop = null;
-        }
+	@Override
+	public void endElement(String uri, String localName, String qName)
+			throws SAXException {
+		if (qName.equals(NMapRun.NMAPRUN_TAG)) {
+			fireEvent(nmapRun);
+			nmapRun = null;
+		}
+		if (qName.equals(ScanInfo.SCANINFO_TAG)) {
+			fireEvent(scanInfo);
+			scanInfo = null;
+		}
+		if (qName.equals(Debugging.DEBUGGING_TAG)) {
+			fireEvent(debugging);
+			debugging = null;
+		}
+		if (qName.equals(Verbose.VERBOSE_TAG)) {
+			fireEvent(verbose);
+			verbose = null;
+		}
+		if (qName.equals(Host.HOST_TAG)) {
+			fireEvent(host);
+			host = null;
+		}
+		if (qName.equals(Status.STATUS_TAG)) {
+			fireEvent(status);
+			status = null;
+		}
+		if (qName.equals(Address.ADDRESS_TAG)) {
+			fireEvent(address);
+			address = null;
+		}
+		if (qName.equals(Hostname.HOSTNAME_TAG)) {
+			fireEvent(hostname);
+			hostname = null;
+		}
+		if (qName.equals(Hostnames.HOSTNAMES_TAG)) {
+			fireEvent(hostnames);
+			hostnames = null;
+		}
+		if (qName.equals(Ports.PORTS_TAG)) {
+			fireEvent(ports);
+			ports = null;
+		}
+		if (qName.equals(Port.PORT_TAG)) {
+			fireEvent(port);
+			port = null;
+		}
+		if (qName.equals(State.STATE_TAG)) {
+			fireEvent(state);
+			state = null;
+		}
+		if (qName.equals(Service.SERVICE_TAG)) {
+			fireEvent(service);
+			service = null;
+		}
+		if (qName.equals(Os.OS_TAG)) {
+			fireEvent(os);
+			os = null;
+		}
+		if (qName.equals(PortUsed.PORT_USED_TAG)) {
+			fireEvent(portUsed);
+			portUsed = null;
+		}
+		if (qName.equals(OsClass.OSCLASS_TAG)) {
+			fireEvent(osClass);
+			osClass = null;
+		}
+		if (qName.equals(OsMatch.OS_MATCH_TAG)) {
+			fireEvent(osMatch);
+			osMatch = null;
+		}
+		if (qName.equals(Distance.DISTANCE_TAG)) {
+			fireEvent(distance);
+			distance = null;
+		}
+		if (qName.equals(TcpSequence.TCP_SEQUENCE_TAG)) {
+			fireEvent(tcpSequence);
+			tcpSequence = null;
+		}
+		if (qName.equals(TcpTsSequence.TCP_TS_SEQUENCE_TAG)) {
+			fireEvent(tcpTsSequence);
+			tcpTsSequence = null;
+		}
+		if (qName.equals(Times.TIMES_TAG)) {
+			fireEvent(times);
+			times = null;
+		}
+		if (qName.equals(Uptime.UPTIME_TAG)) {
+			fireEvent(uptime);
+			uptime = null;
+		}
+		if (qName.equals(RunStats.RUNSTATS_TAG)) {
+			fireEvent(runStats);
+			runStats = null;
+		}
+		if (qName.equals(Finished.FINISHED_TAG)) {
+			fireEvent(finished);
+			finished = null;
+		}
+		if (qName.equals(Hosts.HOSTS_TAG)) {
+			fireEvent(hosts);
+			hosts = null;
+		}
+		if (qName.equals(Cpe.CPE_ATTR)) {
+			fireEvent(cpe);
+			cpe = null;
+		}
+		if (qName.equals(Trace.TRACE_TAG)) {
+			fireEvent(trace);
+			trace = null;
+		}
+		if (qName.equals(Hop.HOP_TAG)) {
+			fireEvent(hop);
+			hop = null;
+		}
 
-        if (processHostScripts) {
-            if (qName.equals(HostScript.TAG)) {
-                fireEvent(hostScript);
-                hostScript = null;
-            }
-            if (qName.equals(Script.TAG)) {
-                if (this.hostScript != null) {
-                    fireEvent(script);
-                    script = null;
-                } else if (this.port != null) {
-                    fireEvent(script);
-                    script = null;
-                }
-            }
-            if (qName.equals(Script.ELEMTAG)) {
-                elemkey = null;
-            }
-        }
+		if (processHostScripts) {
+			if (qName.equals(HostScript.TAG)) {
+				fireEvent(hostScript);
+				hostScript = null;
+			}
+			if (qName.equals(Script.TAG)) {
+				if (this.hostScript != null) {
+					fireEvent(script);
+					script = null;
+				} else if (this.port != null) {
+					fireEvent(script);
+					script = null;
+				}
+			}
+			if (qName.equals(Script.ELEMTAG)) {
+				elemkey = null;
+			}
+		}
 
-    }
+	}
 
-    @Override
-    public void endDocument() throws SAXException {
-        parseEndTime = System.currentTimeMillis();
-    }
+	@Override
+	public void endDocument() throws SAXException {
+		parseEndTime = System.currentTimeMillis();
+	}
 
-    public long getExecTime() {
-        return parseEndTime - parseStartTime;
-    }
+	public long getExecTime() {
+		return parseEndTime - parseStartTime;
+	}
 
 }
