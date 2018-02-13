@@ -42,71 +42,73 @@ import java.util.LinkedList;
 
 public class Port {
 
-    public final static String PORT_TAG = "port";
+	public final static String PORT_TAG = "port";
 
-    public final static String PROTOCOL_ATTR = "protocol";
-    public final static String PORTID_ATTR = "portid";
+	public final static String PROTOCOL_ATTR = "protocol";
+	public final static String PORTID_ATTR = "portid";
 
 
-    private String protocol;
-    private long portId;
+	private String protocol;
+	private long portId;
 
-    private State state;
-    private Service service;
-    private LinkedList<Script> scripts = new LinkedList<>();
+	private State state;
+	private Service service;
+	private LinkedList<Script> scripts = new LinkedList<>();
 
-    public String getProtocol() {
-        return protocol;
-    }
+	public String getProtocol() {
+		return protocol;
+	}
 
-    public void setProtocol(String protocol) {
-        this.protocol = protocol;
-    }
+	public void setProtocol(String protocol) {
+		this.protocol = protocol;
+	}
 
-    public long getPortId() {
-        return portId;
-    }
+	public long getPortId() {
+		return portId;
+	}
 
-    public void setPortId(long portId) {
-        this.portId = portId;
-    }
+	public void setPortId(long portId) {
+		this.portId = portId;
+	}
 
-    public State getState() {
-        return state;
-    }
+	public State getState() {
+		return state;
+	}
 
-    public void setState(State state) {
-        this.state = state;
-    }
+	public void setState(State state) {
+		this.state = state;
+	}
 
-    public Service getService() {
-        return service;
-    }
+	public Service getService() {
+		return service;
+	}
 
-    public void setService(Service service) {
-        this.service = service;
-    }
+	public void setService(Service service) {
+		this.service = service;
+	}
 
-    public void addScript(Script script) {
-        scripts.add(script);
-    }
+	public void addScript(Script script) {
+		scripts.add(script);
+	}
 
-    public LinkedList<Script> getScripts(){return scripts;}
+	public LinkedList<Script> getScripts() {
+		return scripts;
+	}
 
-    public Script getScript(String id_){
-        for (Script script:scripts){
-            if(script.getId().equals(id_)){
-                return script;
-            }
+	public Script getScript(String id_) {
+		for (Script script : scripts) {
+			if (script.getId().equals(id_)) {
+				return script;
+			}
 
-        }
-        return null;
-    }
+		}
+		return null;
+	}
 
-    @Override
-    public String toString() {
-        return "Port [portId=" + portId + ", protocol=" + protocol + "]";
-    }
+	@Override
+	public String toString() {
+		return "Port [portId=" + portId + ", protocol=" + protocol + "]";
+	}
 
 
 }
