@@ -286,10 +286,6 @@ public class NMapRunHandlerImpl implements INMapRunHandler {
 		return new Cpe();
 	}
 
-	private void noop() {
-
-	}
-
 	public Trace createTrace(Attributes attributes) {
 		Trace trace = new Trace();
 
@@ -340,7 +336,6 @@ public class NMapRunHandlerImpl implements INMapRunHandler {
 			} else {
 				throw new RuntimeException();
 			}
-			noop();
 		}
 		return script;
 	}

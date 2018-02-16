@@ -240,18 +240,9 @@ public class OnePassParserTest implements IConstants {
             if (!server.equals("Windows 7 Professional 7600")) {
                 throw new RuntimeException();
             }
-            System.out.println("");
+            System.out.println("os detected");
         }
-        System.out.println("");
+        System.out.println("end test");
     }
-
-    @Test
-    @Ignore
-    public void testHostScript2() {
-        OnePassParser onePassParser = new OnePassParser();
-        URL testFileUrl = getClass().getClassLoader().getResource(NmapDataSamples.uuu);
-        String testFilePath = testFileUrl.getFile();
-        NMapRun nmap = onePassParser.parse(testFilePath, onePassParser.FILE_NAME_INPUT);
-        System.out.println("");
-    }
+    
 }

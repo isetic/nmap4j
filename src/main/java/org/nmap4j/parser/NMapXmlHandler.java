@@ -320,8 +320,8 @@ public class NMapXmlHandler extends DefaultHandler {
 			isCpeData = false;
 		}
 		if (elemkey != null) {
-			String fragment = new String(ch, start, length);
 			if (this.script != null) {
+				String fragment = new String(ch, start, length);
 				this.script.addElem(this.elemkey, fragment);
 			}
 		}
@@ -449,10 +449,7 @@ public class NMapXmlHandler extends DefaultHandler {
 				hostScript = null;
 			}
 			if (qName.equals(Script.TAG)) {
-				if (this.hostScript != null) {
-					fireEvent(script);
-					script = null;
-				} else if (this.port != null) {
+				if (this.hostScript != null || this.port != null) {
 					fireEvent(script);
 					script = null;
 				}
