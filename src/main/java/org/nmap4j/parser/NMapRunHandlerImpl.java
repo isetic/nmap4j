@@ -289,6 +289,7 @@ public class NMapRunHandlerImpl implements INMapRunHandler {
 	public Trace createTrace(Attributes attributes) {
 		Trace trace = new Trace();
 
+		// This conditions were added becouse they happened in practice with real scans.
 		String portValue = attributes.getValue( Trace.PORT_ATTR );
 		if (portValue != null)
 			trace.setPort( Long.parseLong( portValue ) );
@@ -322,19 +323,16 @@ public class NMapRunHandlerImpl implements INMapRunHandler {
 	@Override
 	public Script createScript(Attributes attributes) {
 		Script script = new Script();
-		int ll = attributes.getLength();
-		for (int cont = 0; cont < ll; cont++) {
+		int length = attributes.getLength();
+		for (int cont = 0; cont < length; cont++) {
 			String value = attributes.getValue( cont );
 			String name = attributes.getQName( cont );
-			String type = attributes.getType( cont );
-			String localName = attributes.getLocalName( cont );
-			String uri = attributes.getURI( cont );
 			if (name.equals( "id" )) {
 				script.setId( value );
 			} else if (name.equals( "output" )) {
 				script.setOutput( value );
 			} else {
-				throw new RuntimeException();
+				throw new UnsupportedOperationException( "Not implemented, ask developer to review." );
 			}
 		}
 		return script;

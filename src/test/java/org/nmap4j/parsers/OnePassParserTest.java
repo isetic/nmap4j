@@ -102,10 +102,10 @@ public class OnePassParserTest implements IConstants {
 
             boolean foundAtLeastOneNotNullCpeObj = false;
 
-            for (Host h : hosts) {
-                if (h.getOs() != null) {
-                    if (h.getOs().getOsClasses() != null) {
-                        ArrayList<OsClass> osClasses = h.getOs().getOsClasses();
+            for (Host host : hosts) {
+                if (host.getOs() != null) {
+                    if (host.getOs().getOsClasses() != null) {
+                        ArrayList<OsClass> osClasses = host.getOs().getOsClasses();
                         for (OsClass osClass : osClasses) {
                             ArrayList<Cpe> cpeData = osClass.getCpe();
                             for (Cpe cpe : cpeData) {
@@ -244,5 +244,5 @@ public class OnePassParserTest implements IConstants {
         }
         System.out.println("end test");
     }
-    
+
 }

@@ -45,11 +45,7 @@ import org.nmap4j.data.host.scripts.HostScript;
 import org.nmap4j.data.host.scripts.Script;
 import org.nmap4j.data.host.trace.Hop;
 import org.nmap4j.data.host.trace.Trace;
-import org.nmap4j.data.nmaprun.Debugging;
-import org.nmap4j.data.nmaprun.Host;
-import org.nmap4j.data.nmaprun.RunStats;
-import org.nmap4j.data.nmaprun.ScanInfo;
-import org.nmap4j.data.nmaprun.Verbose;
+import org.nmap4j.data.nmaprun.*;
 import org.nmap4j.data.nmaprun.host.ports.port.Service;
 import org.nmap4j.data.nmaprun.host.ports.port.State;
 import org.nmap4j.data.nmaprun.hostnames.Hostname;
@@ -57,10 +53,13 @@ import org.nmap4j.data.nmaprun.runstats.Finished;
 import org.nmap4j.data.nmaprun.runstats.Hosts;
 import org.nmap4j.parser.events.NMap4JParserEventListener;
 import org.nmap4j.parser.events.ParserEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -75,11 +74,11 @@ import java.util.List;
  * @author jsvede
  */
 public class NMapXmlHandler extends DefaultHandler {
+	final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	private static List<NMap4JParserEventListener> listeners;
-	private static boolean processHostScripts = true;
 
-	private INMapRunHandler runHandler;
+	private final INMapRunHandler runHandler;
 
 	private long parseStartTime = 0;
 
@@ -123,7 +122,7 @@ public class NMapXmlHandler extends DefaultHandler {
 	private String previousQName;
 
 	public NMapXmlHandler(INMapRunHandler handler) {
-		listeners = new ArrayList<NMap4JParserEventListener>();
+		listeners = new ArrayList<>();
 		runHandler = handler;
 	}
 
@@ -142,7 +141,7 @@ public class NMapXmlHandler extends DefaultHandler {
 
 	public static void addListener(NMap4JParserEventListener listener) {
 		if (listeners == null) {
-			listeners = new ArrayList<NMap4JParserEventListener>();
+			listeners = new ArrayList<>();
 		}
 		listeners.add(listener);
 	}
@@ -154,9 +153,6 @@ public class NMapXmlHandler extends DefaultHandler {
 	@Override
 	public void startDocument() throws SAXException {
 		parseStartTime = System.currentTimeMillis();
-	}
-
-	private void noop() {
 	}
 
 	@Override
@@ -279,33 +275,29 @@ public class NMapXmlHandler extends DefaultHandler {
 			hop = runHandler.createHop(attributes);
 			trace.addHop(hop);
 		}
-		if (processHostScripts) {
-			if (qName.equals(HostScript.TAG)) {
-				this.hostScript = runHandler.createHostScript(attributes);
-				this.host.setHostScript(this.hostScript);
-			}
-			if (qName.equals(Script.TAG)) {
-				if (this.hostScript != null) {
-					// There are mor tags named script that are not this case.
-					this.script = runHandler.createScript(attributes);
-					this.hostScript.addScript(this.script);
-				} else if (this.port != null) {
-					this.script = runHandler.createScript(attributes);
-					this.port.addScript(this.script);
-				}
-			}
-			if (qName.equals(Script.ELEMTAG)) {
-				if (this.elemkey != null) {
-					throw new RuntimeException();
-				}
-				if (false && this.script == null) {
-					// esto se puede encontrar en script y al menos en table, por lo que desactivo.
-					throw new RuntimeException();
-				}
-				String elemKey = attributes.getValue("key");
-				this.elemkey = elemKey;
+
+		if (qName.equals(HostScript.TAG)) {
+			this.hostScript = runHandler.createHostScript(attributes);
+			this.host.setHostScript(this.hostScript);
+		}
+		if (qName.equals(Script.TAG)) {
+			if (this.hostScript != null) {
+				// There are mor tags named script that are not this case.
+				this.script = runHandler.createScript(attributes);
+				this.hostScript.addScript(this.script);
+			} else if (this.port != null) {
+				this.script = runHandler.createScript(attributes);
+				this.port.addScript(this.script);
 			}
 		}
+		if (qName.equals(Script.ELEMTAG)) {
+			if (this.elemkey != null) {
+				throw new InternalError("If we start this element none should be previously created. This should not happen.");
+			}
+			// sometimes this.script == null in practice so I will not check it. Not sure if it should be.
+			this.elemkey = attributes.getValue("key");
+		}
+
 		// set the previousQName for comparison to later elements
 		previousQName = qName;
 	}
@@ -442,23 +434,19 @@ public class NMapXmlHandler extends DefaultHandler {
 			fireEvent(hop);
 			hop = null;
 		}
-
-		if (processHostScripts) {
-			if (qName.equals(HostScript.TAG)) {
-				fireEvent(hostScript);
-				hostScript = null;
-			}
-			if (qName.equals(Script.TAG)) {
-				if (this.hostScript != null || this.port != null) {
-					fireEvent(script);
-					script = null;
-				}
-			}
-			if (qName.equals(Script.ELEMTAG)) {
-				elemkey = null;
+		if (qName.equals(HostScript.TAG)) {
+			fireEvent(hostScript);
+			hostScript = null;
+		}
+		if (qName.equals(Script.TAG)) {
+			if (this.hostScript != null || this.port != null) {
+				fireEvent(script);
+				script = null;
 			}
 		}
-
+		if (qName.equals(Script.ELEMTAG)) {
+			elemkey = null;
+		}
 	}
 
 	@Override
