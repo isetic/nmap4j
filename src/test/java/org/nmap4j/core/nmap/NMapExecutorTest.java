@@ -1,115 +1,105 @@
 package org.nmap4j.core.nmap;
 
-import static org.junit.Assert.fail;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.nmap4j.NmapTestUtils;
 import org.nmap4j.core.flags.ArgumentProperties;
 import org.nmap4j.core.flags.Flag;
-import org.nmap4j.core.nmap.ExecutionResults;
-import org.nmap4j.core.nmap.NMapExecutionException;
-import org.nmap4j.core.nmap.NMapExecutor;
-import org.nmap4j.core.nmap.NMapInitializationException;
-import org.nmap4j.core.nmap.NMapProperties;
+
+import static org.junit.Assert.fail;
 
 public class NMapExecutorTest {
-	
-	private ArgumentProperties nmapArgs ;
-	private NMapProperties nmapProps ;
-	
+
+	private ArgumentProperties nmapArgs;
+	private NMapProperties nmapProps;
+
 	@Before
 	public void setup() {
-		nmapArgs = new ArgumentProperties() ;
-		nmapProps = new NMapProperties() ;
+		nmapArgs = new ArgumentProperties();
+		nmapProps = new NMapProperties();
 	}
-	
+
 	@After
 	public void teardown() {
-		nmapArgs = null ;
-	    nmapProps =	null ;
+		nmapArgs = null;
+		nmapProps = null;
 	}
-	
+
 	/**
 	 * This tests whether or not we fail with an exception when we try
 	 * to instantiate the object with nulls which isn't a valide use case.
 	 */
 	@Test
 	public void testConstructionWithNulls() {
-		boolean hasFailed = false ;
+		boolean hasFailed = false;
 		// expect this to throw an exception
 		try {
-			NMapExecutor nmapExec = new NMapExecutor( null, null ) ;
+			NMapExecutor nmapExec = new NMapExecutor( null, null );
 		} catch (NMapInitializationException e) {
 			// this is what I would expect to happen
-			hasFailed = true ;
+			hasFailed = true;
 		}
-		
-		if( !hasFailed ) {
-			fail() ;
+
+		if (!hasFailed) {
+			fail();
 		}
 	}
-	
+
 	/**
 	 * This test verifies that the initialization fails due to there being
 	 * no path to nmap.
 	 */
 	@Test
-	public void testConstructionWithNoPath() { 
-		boolean hasFailed = false ;
+	public void testConstructionWithNoPath() {
+		boolean hasFailed = false;
 		// expect this to throw an exception
 		try {
-			NMapExecutor nmapExec = new NMapExecutor( nmapArgs, nmapProps ) ;
+			NMapExecutor nmapExec = new NMapExecutor( nmapArgs, nmapProps );
 		} catch (NMapInitializationException e) {
 			// this is what I would expect to happen
-			hasFailed = true ;
+			hasFailed = true;
 		}
-		
-		if( !hasFailed ) {
-			fail() ;
-		}		
+
+		if (!hasFailed) {
+			fail();
+		}
 	}
-	
+
 	@Test
 	public void testZeroLengthNMapPath() {
-		nmapProps.setPath( "" ) ;
+		nmapProps.setPath( "" );
 
-		boolean hasFailed = false ;
+		boolean hasFailed = false;
 		// expect this to throw an exception
 		try {
-			NMapExecutor nmapExec = new NMapExecutor( nmapArgs, nmapProps ) ;
+			NMapExecutor nmapExec = new NMapExecutor( nmapArgs, nmapProps );
 		} catch (NMapInitializationException e) {
 			// this is what I would expect to happen
-			hasFailed = true ;
+			hasFailed = true;
 		}
-		
-		if( !hasFailed ) {
-			fail() ;
-		}		
+
+		if (!hasFailed) {
+			fail();
+		}
 	}
-	
+
 	@Test
-	public void testExecuteMethodWithoutSudo() {
-		
-		nmapProps.setPath( "/usr/local" ) ;
+	public void testExecuteMethodWithoutSudo() throws NMapInitializationException, NMapExecutionException {
 
-		nmapArgs.addFlag( Flag.AGGRESIVE_TIMING ) ;
-		nmapArgs.addFlag( Flag.VERSION ) ;
-		nmapArgs.addFlag( Flag.OS_DETECTION ) ;
-		
-		nmapArgs.addIncludedHost( "localhost" ) ;
+		nmapProps.setPath( NmapTestUtils.findNmapPath() );
 
-		try {
-			NMapExecutor nmapExec = new NMapExecutor( nmapArgs, nmapProps ) ;
-			ExecutionResults results = nmapExec.execute() ;
-			System.out.println( results.getOutput() ) ;
-		} catch (NMapInitializationException e) {
-			e.printStackTrace() ;
-			fail() ;
-		} catch (NMapExecutionException e) {
-			e.printStackTrace() ;
-			fail() ;
-		}
+		nmapArgs.addFlag( Flag.AGGRESIVE_TIMING );
+		nmapArgs.addFlag( Flag.VERSION );
+		nmapArgs.addFlag( Flag.OS_DETECTION );
+
+		nmapArgs.addIncludedHost( "localhost" );
+
+
+		NMapExecutor nmapExec = new NMapExecutor( nmapArgs, nmapProps );
+		ExecutionResults results = nmapExec.execute();
+		System.out.println( results.getOutput() );
+
 	}
-	
+
 }

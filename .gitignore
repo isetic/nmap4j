@@ -7,3 +7,7 @@ target
 *.class
 .idea
 *.iml
+
+### Gradle template
+.gradle
+build/

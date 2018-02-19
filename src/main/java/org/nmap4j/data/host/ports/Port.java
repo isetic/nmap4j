@@ -8,48 +8,52 @@
  * commercial applications or appliances generally requires the purchase
  * of a commercial Nmap license (see http://nmap.org/book/man-legal.html).
  *
- * Redistribution and use in source and binary forms, with or without 
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
- *    * Redistributions of source code must retain the above copyright notice, 
+ *    * Redistributions of source code must retain the above copyright notice,
  *      this list of conditions and the following disclaimer.
- *    * Redistributions in binary form must reproduce the above copyright 
- *      notice, this list of conditions and the following disclaimer in the 
+ *    * Redistributions in binary form must reproduce the above copyright
+ *      notice, this list of conditions and the following disclaimer in the
  *      documentation and/or other materials provided with the distribution.
- *    * Neither the name of the nmap4j.org nor the names of its contributors 
- *      may be used to endorse or promote products derived from this software 
+ *    * Neither the name of the nmap4j.org nor the names of its contributors
+ *      may be used to endorse or promote products derived from this software
  *      without specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE 
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.nmap4j.data.host.ports;
 
+import org.nmap4j.data.host.scripts.Script;
 import org.nmap4j.data.nmaprun.host.ports.port.Service;
 import org.nmap4j.data.nmaprun.host.ports.port.State;
 
+import java.util.LinkedList;
+
 public class Port {
-	
-	public final static String PORT_TAG = "port" ;
-	
-	public final static String PROTOCOL_ATTR = "protocol" ;
-	public final static String PORTID_ATTR = "portid" ;
-	
-	
-	private String protocol ;
-	private long portId ;
-	
-	private State state ;
-	private Service service ;
+
+	public final static String PORT_TAG = "port";
+
+	public final static String PROTOCOL_ATTR = "protocol";
+	public final static String PORTID_ATTR = "portid";
+
+
+	private String protocol;
+	private long portId;
+
+	private State state;
+	private Service service;
+	private LinkedList<Script> scripts = new LinkedList<>();
 
 	public String getProtocol() {
 		return protocol;
@@ -75,9 +79,29 @@ public class Port {
 	public void setService(Service service) {
 		this.service = service;
 	}
+
+	public void addScript(Script script) {
+		scripts.add(script);
+	}
+
+	public LinkedList<Script> getScripts() {
+		return scripts;
+	}
+
+	public Script getScript(String id_) {
+		for (Script script : scripts) {
+			if (script.getId().equals(id_)) {
+				return script;
+			}
+
+		}
+		return null;
+	}
+
 	@Override
 	public String toString() {
 		return "Port [portId=" + portId + ", protocol=" + protocol + "]";
 	}
-	
+
+
 }

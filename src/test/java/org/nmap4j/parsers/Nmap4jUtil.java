@@ -1,6 +1,7 @@
 package org.nmap4j.parsers;
 
 import org.junit.Test;
+import org.nmap4j.NmapTestUtils;
 import org.nmap4j.core.flags.Flag;
 import org.nmap4j.core.nmap.ExecutionResults;
 import org.nmap4j.core.scans.BaseScan;
@@ -17,7 +18,7 @@ public class Nmap4jUtil {
 	
 	public static boolean isPortOpen( int port, String address ) throws Exception {
 		
-		BaseScan baseScan = new BaseScan( "/usr/local") ;
+		BaseScan baseScan = new BaseScan(NmapTestUtils.findNmapPath()) ;
 		
 		baseScan.includeHost( address ) ;
 		baseScan.addPorts(new int[]{ port } ) ;
