@@ -19,7 +19,7 @@ import java.io.InputStream;
 public class NMapXmlHandlerTest implements IConstants {
 
 	@Test
-	public void basicTest() {
+	public void basicTest() throws ParserConfigurationException, SAXException, IOException {
 
 
 		INMapRunHandler nmrh = new NMapRunHandlerImpl();
@@ -30,24 +30,17 @@ public class NMapXmlHandlerTest implements IConstants {
 		NMapXmlHandler.addListener( listener );
 
 		SAXParserFactory spf = SAXParserFactory.newInstance();
-		try {
 
-			//get a new instance of parser
-			SAXParser sp = spf.newSAXParser();
 
-			// get the ms-vscan.xml as a stream
-			InputStream in = getClass().getClassLoader().getResourceAsStream( NmapDataSamples.fileName );
+		//get a new instance of parser
+		SAXParser sp = spf.newSAXParser();
 
-			//parse the file and also register this class for call backs
-			sp.parse( in, nmxh );
+		// get the ms-vscan.xml as a stream
+		InputStream in = getClass().getClassLoader().getResourceAsStream( NmapDataSamples.fileName );
 
-		} catch (SAXException se) {
-			se.printStackTrace();
-		} catch (ParserConfigurationException pce) {
-			pce.printStackTrace();
-		} catch (IOException ie) {
-			ie.printStackTrace();
-		}
+		//parse the file and also register this class for call backs
+		sp.parse( in, nmxh );
+
 
 		System.out.println( "\n\n exec time: " + nmxh.getExecTime() + "ms" );
 	}

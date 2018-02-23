@@ -163,98 +163,174 @@ public class NMapXmlHandler extends DefaultHandler {
 			nmapRun = runHandler.createNMapRun(attributes);
 		}
 		if (qName.equals(ScanInfo.SCANINFO_TAG)) {
+			if(scanInfo!=null){
+				throw new RuntimeException(  );
+			}
 			scanInfo = runHandler.createScanInfo(attributes);
 			nmapRun.setScanInfo(scanInfo);
 		}
 		if (qName.equals(Debugging.DEBUGGING_TAG)) {
+			if(debugging!=null){
+				throw new RuntimeException(  );
+			}
 			debugging = runHandler.createDebugging(attributes);
 			nmapRun.setDebugging(debugging);
 		}
 		if (qName.equals(Verbose.VERBOSE_TAG)) {
+			if(verbose!=null){
+				throw new RuntimeException(  );
+			}
 			verbose = runHandler.createVerbose(attributes);
 			nmapRun.setVerbose(verbose);
 		}
 		if (qName.equals(Host.HOST_TAG)) {
+			if(host!=null){
+				throw new RuntimeException(  );
+			}
 			host = runHandler.createHost(attributes);
 			nmapRun.addHost(host);
 		}
 		if (qName.equals(Status.STATUS_TAG)) {
+			if(status!=null){
+				throw new RuntimeException(  );
+			}
 			status = runHandler.createStatus(attributes);
 			host.setStatus(status);
 		}
 		if (qName.equals(Address.ADDRESS_TAG)) {
+			if(address!=null){
+				throw new RuntimeException(  );
+			}
 			address = runHandler.createAddress(attributes);
 			host.addAddress(address);
 		}
 		if (qName.equals(Hostnames.HOSTNAMES_TAG)) {
+			if(hostnames!=null){
+				throw new RuntimeException(  );
+			}
 			hostnames = runHandler.createHostnames(attributes);
 			host.setHostnames(hostnames);
 		}
 		if (qName.equals(Hostname.HOSTNAME_TAG)) {
+			if(hostname!=null){
+				throw new RuntimeException(  );
+			}
 			hostname = runHandler.createHostname(attributes);
 			hostnames.setHostname(hostname);
 		}
 		if (qName.equals(Ports.PORTS_TAG)) {
+			if(ports!=null){
+				throw new RuntimeException(  );
+			}
 			ports = runHandler.createPorts(attributes);
 			host.setPorts(ports);
 		}
 		if (qName.equals(Port.PORT_TAG)) {
+			if(port!=null){
+				throw new RuntimeException(  );
+			}
 			port = runHandler.createPort(attributes);
 			ports.addPort(port);
 		}
 		if (qName.equals(State.STATE_TAG)) {
+			if(state!=null){
+				throw new RuntimeException(  );
+			}
 			state = runHandler.createState(attributes);
 			port.setState(state);
 		}
 		if (qName.equals(Service.SERVICE_TAG)) {
+			if(service!=null){
+				throw new RuntimeException(  );
+			}
 			service = runHandler.createService(attributes);
 			port.setService(service);
 		}
 		if (qName.equals(Os.OS_TAG)) {
+			if(os!=null){
+				throw new RuntimeException(  );
+			}
 			os = runHandler.createOs(attributes);
 			host.setOs(os);
 		}
 		if (qName.equals(PortUsed.PORT_USED_TAG)) {
+			if(portUsed!=null){
+				throw new RuntimeException(  );
+			}
 			portUsed = runHandler.createPortUsed(attributes);
 			os.addPortUsed(portUsed);
 		}
 		if (qName.equals(OsClass.OSCLASS_TAG)) {
+			if(osClass!=null){
+				throw new RuntimeException(  );
+			}
 			osClass = runHandler.createOsClass(attributes);
-			os.addOsClass(osClass);
+			if(osMatch==null ){
+				os.addOsClass( osClass );
+			}else  {
+				osMatch.addOsClass( osClass );
+			}
 		}
 		if (qName.equals(OsMatch.OS_MATCH_TAG)) {
+			if(osMatch!=null){
+				throw new RuntimeException(  );
+			}
 			osMatch = runHandler.createOsMatch(attributes);
 			os.addOsMatch(osMatch);
 		}
 		if (qName.equals(Distance.DISTANCE_TAG)) {
+			if(distance!=null){
+				throw new RuntimeException(  );
+			}
 			distance = runHandler.createDistance(attributes);
 			host.setDistance(distance);
 		}
 		if (qName.equals(TcpSequence.TCP_SEQUENCE_TAG)) {
+			if(tcpSequence!=null){
+				throw new RuntimeException(  );
+			}
 			tcpSequence = runHandler.createTcpSequence(attributes);
 			host.setTcpSequence(tcpSequence);
 		}
 		if (qName.equals(TcpTsSequence.TCP_TS_SEQUENCE_TAG)) {
+			if(tcpTsSequence!=null){
+				throw new RuntimeException(  );
+			}
 			tcpTsSequence = runHandler.createTcpTsSequence(attributes);
 			host.setTcpTsSequence(tcpTsSequence);
 		}
 		if (qName.equals(Times.TIMES_TAG)) {
+			if(times!=null){
+				throw new RuntimeException(  );
+			}
 			times = runHandler.createTimes(attributes);
 			host.setTimes(times);
 		}
 		if (qName.equals(Uptime.UPTIME_TAG)) {
+			if(uptime!=null){
+				throw new RuntimeException(  );
+			}
 			uptime = runHandler.createUptime(attributes);
 			host.setUptime(uptime);
 		}
 		if (qName.equals(RunStats.RUNSTATS_TAG)) {
+			if(runStats!=null){
+				throw new RuntimeException(  );
+			}
 			runStats = runHandler.createRunStats(attributes);
 			nmapRun.setRunStats(runStats);
 		}
 		if (qName.equals(Finished.FINISHED_TAG)) {
+			if(finished!=null){
+				throw new RuntimeException(  );
+			}
 			finished = runHandler.createFinished(attributes);
 			runStats.setFinished(finished);
 		}
 		if (qName.equals(Hosts.HOSTS_TAG)) {
+			if(hosts!=null){
+				throw new RuntimeException(  );
+			}
 			hosts = runHandler.createHosts(attributes);
 			runStats.setHosts(hosts);
 		}
@@ -268,17 +344,26 @@ public class NMapXmlHandler extends DefaultHandler {
 			}
 		}
 		if (qName.equals(Trace.TRACE_TAG)) {
+			if(trace!=null){
+				throw new RuntimeException(  );
+			}
 			trace = runHandler.createTrace(attributes);
 			host.setTrace(trace);
 		}
 		if (qName.equals(Hop.HOP_TAG)) {
+			if(hop!=null){
+				throw new RuntimeException(  );
+			}
 			hop = runHandler.createHop(attributes);
 			trace.addHop(hop);
 		}
 
 		if (qName.equals(HostScript.TAG)) {
-			this.hostScript = runHandler.createHostScript(attributes);
-			this.host.setHostScript(this.hostScript);
+			if(hostScript!=null){
+				throw new RuntimeException(  );
+			}
+			hostScript = runHandler.createHostScript(attributes);
+			host.setHostScript(this.hostScript);
 		}
 		if (qName.equals(Script.TAG)) {
 			if (this.hostScript != null) {
@@ -288,6 +373,12 @@ public class NMapXmlHandler extends DefaultHandler {
 			} else if (this.port != null) {
 				this.script = runHandler.createScript(attributes);
 				this.port.addScript(this.script);
+			}else{
+				if("postscript".equals( previousQName) ){
+					// puede ser, no esta implementado
+				}else{
+					throw new RuntimeException(  );
+				}
 			}
 		}
 		if (qName.equals(Script.ELEMTAG)) {

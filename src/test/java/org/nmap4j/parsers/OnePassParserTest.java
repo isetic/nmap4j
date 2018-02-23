@@ -14,6 +14,7 @@ import org.nmap4j.core.scans.ParameterValidationFailureException;
 import org.nmap4j.data.NMapRun;
 import org.nmap4j.data.host.Cpe;
 import org.nmap4j.data.host.os.OsClass;
+import org.nmap4j.data.host.os.OsMatch;
 import org.nmap4j.data.host.scripts.HostScript;
 import org.nmap4j.data.host.scripts.Script;
 import org.nmap4j.data.nmaprun.Host;
@@ -104,15 +105,18 @@ public class OnePassParserTest implements IConstants {
 
             for (Host host : hosts) {
                 if (host.getOs() != null) {
-                    if (host.getOs().getOsClasses() != null) {
-                        ArrayList<OsClass> osClasses = host.getOs().getOsClasses();
-                        for (OsClass osClass : osClasses) {
-                            ArrayList<Cpe> cpeData = osClass.getCpe();
-                            for (Cpe cpe : cpeData) {
-                                if (cpe != null) {
-                                    if (cpe.getCpeData() != null) {
-                                        System.out.println(cpe.getCpeData());
-                                        foundAtLeastOneNotNullCpeObj = true;
+                    ArrayList<OsMatch> osMatches = host.getOs().getOsMatches();
+                    for(OsMatch osMatch:osMatches){
+                        if (osMatch.getOsClasses() != null) {
+                            ArrayList<OsClass> osClasses = osMatch.getOsClasses();
+                            for (OsClass osClass : osClasses) {
+                                ArrayList<Cpe> cpeData = osClass.getCpe();
+                                for (Cpe cpe : cpeData) {
+                                    if (cpe != null) {
+                                        if (cpe.getCpeData() != null) {
+                                            System.out.println(cpe.getCpeData());
+                                            foundAtLeastOneNotNullCpeObj = true;
+                                        }
                                     }
                                 }
                             }
