@@ -57,23 +57,18 @@ public class OnePassParserTest implements IConstants {
     }
 
     @Test
-    public void testOnePassWithSMBOutput() {
+    public void testOnePassWithSMBOutput() throws IOException {
 
 
         OnePassParser opp = new OnePassParser();
 
         NMapRun nmapRun = null;
-        try {
-            InputStream is = getClass().getClassLoader().getResourceAsStream(NmapDataSamples.smbFileName);
 
-            String fileAsString = IOUtils.toString(is);
+		InputStream is = getClass().getClassLoader().getResourceAsStream(NmapDataSamples.smbFileName);
 
-            nmapRun = opp.parse(fileAsString, OnePassParser.STRING_INPUT);
+		String fileAsString = IOUtils.toString(is);
 
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+		nmapRun = opp.parse(fileAsString, OnePassParser.STRING_INPUT);
 
         if (nmapRun != null) {
             System.out.println("hosts count: " + nmapRun.getHosts().size());
@@ -84,7 +79,7 @@ public class OnePassParserTest implements IConstants {
 
 
     @Test
-    public void testForPresenceOfCpeData() {
+    public void testForPresenceOfCpeData() throws IOException {
 
         System.out.println("start");
 
@@ -92,47 +87,45 @@ public class OnePassParserTest implements IConstants {
         OnePassParser opp = new OnePassParser();
 
         NMapRun nmapRun = null;
-        try {
-            InputStream is = getClass().getClassLoader().getResourceAsStream(NmapDataSamples.smbFileName);
 
-            String fileAsString = IOUtils.toString(is);
+		InputStream is = getClass().getClassLoader().getResourceAsStream(NmapDataSamples.smbFileName);
 
-            nmapRun = opp.parse(fileAsString, OnePassParser.STRING_INPUT);
+		String fileAsString = IOUtils.toString(is);
 
-            ArrayList<Host> hosts = nmapRun.getHosts();
+		nmapRun = opp.parse(fileAsString, OnePassParser.STRING_INPUT);
 
-            boolean foundAtLeastOneNotNullCpeObj = false;
+		ArrayList<Host> hosts = nmapRun.getHosts();
 
-            for (Host host : hosts) {
-                if (host.getOs() != null) {
-                    ArrayList<OsMatch> osMatches = host.getOs().getOsMatches();
-                    for(OsMatch osMatch:osMatches){
-                        if (osMatch.getOsClasses() != null) {
-                            ArrayList<OsClass> osClasses = osMatch.getOsClasses();
-                            for (OsClass osClass : osClasses) {
-                                ArrayList<Cpe> cpeData = osClass.getCpe();
-                                for (Cpe cpe : cpeData) {
-                                    if (cpe != null) {
-                                        if (cpe.getCpeData() != null) {
-                                            System.out.println(cpe.getCpeData());
-                                            foundAtLeastOneNotNullCpeObj = true;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+		boolean foundAtLeastOneNotNullCpeObj = false;
 
-            if (!foundAtLeastOneNotNullCpeObj) {
-                fail();
-            }
+		for (Host host : hosts) {
+			if (host.getOs() != null) {
+				ArrayList<OsMatch> osMatches = host.getOs().getOsMatches();
+				for(OsMatch osMatch:osMatches){
+					if (osMatch.getOsClasses() != null) {
+						ArrayList<OsClass> osClasses = osMatch.getOsClasses();
+						for (OsClass osClass : osClasses) {
+							ArrayList<Cpe> cpeData = osClass.getCpe();
+							for (Cpe cpe : cpeData) {
+								if (cpe != null) {
+									if (cpe.getCpeData() != null) {
+										System.out.println(cpe.getCpeData());
+										foundAtLeastOneNotNullCpeObj = true;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		if (!foundAtLeastOneNotNullCpeObj) {
+			fail();
+		}
 
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
 
         if (nmapRun != null) {
             System.out.println("hosts count: " + nmapRun.getHosts().size());
@@ -173,7 +166,7 @@ public class OnePassParserTest implements IConstants {
     }
 
     @Test
-    public void testAddingListener() {
+    public void testAddingListener() throws IOException {
         System.out.println("start");
 
 
@@ -183,19 +176,14 @@ public class OnePassParserTest implements IConstants {
 
         HostListener simpleListener = new HostListener();
 
-        try {
-            InputStream is = getClass().getClassLoader().getResourceAsStream(NmapDataSamples.smbFileName);
+		InputStream is = getClass().getClassLoader().getResourceAsStream(NmapDataSamples.smbFileName);
 
-            String fileAsString = IOUtils.toString(is);
+		String fileAsString = IOUtils.toString(is);
 
-            opp.addListener(simpleListener);
-            nmapRun = opp.parse(fileAsString, OnePassParser.STRING_INPUT);
+		opp.addListener(simpleListener);
+		nmapRun = opp.parse(fileAsString, OnePassParser.STRING_INPUT);
 
-            ArrayList<Host> hosts = nmapRun.getHosts();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+		ArrayList<Host> hosts = nmapRun.getHosts();
 
         if (nmapRun != null) {
             if (nmapRun.getHosts().size() != simpleListener.getHostCount()) {
