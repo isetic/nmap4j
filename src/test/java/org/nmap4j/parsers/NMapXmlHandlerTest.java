@@ -27,7 +27,7 @@ public class NMapXmlHandlerTest implements IConstants {
 
 		TestListener listener = new TestListener();
 
-		NMapXmlHandler.addListener( listener );
+		nmxh.addListener( listener );
 
 		SAXParserFactory spf = SAXParserFactory.newInstance();
 
@@ -36,13 +36,14 @@ public class NMapXmlHandlerTest implements IConstants {
 		SAXParser sp = spf.newSAXParser();
 
 		// get the ms-vscan.xml as a stream
-		InputStream in = getClass().getClassLoader().getResourceAsStream( NmapDataSamples.fileName );
+		try(InputStream in = getClass().getClassLoader().getResourceAsStream( NmapDataSamples.fileName )) {
 
-		//parse the file and also register this class for call backs
-		sp.parse( in, nmxh );
-
+			//parse the file and also register this class for call backs
+			sp.parse( in, nmxh );
+		}
 
 		System.out.println( "\n\n exec time: " + nmxh.getExecTime() + "ms" );
+
 	}
 
 
