@@ -128,7 +128,7 @@ public class NMapXmlHandler extends DefaultHandler {
 
 	private void fireEvent(Object payload) {
 		if(payload==null){
-			throw new InternalError("Nmap XML error, end tag with no beginning?");
+			throw new RuntimeException("Nmap XML error, end tag with no beginning?");
 		}
 		ParserEvent event = new ParserEvent(this, payload);
 		if (listeners != null && listeners.size() > 0) {
@@ -170,91 +170,91 @@ public class NMapXmlHandler extends DefaultHandler {
 			nmapRun = runHandler.createNMapRun(attributes);
 		} else if (qName.equals(ScanInfo.SCANINFO_TAG)) {
 			if(scanInfo!=null){
-				throw new InternalError( nestedTagErrorMsg(qName) );
+				throw new RuntimeException( nestedTagErrorMsg(qName) );
 			}
 			scanInfo = runHandler.createScanInfo(attributes);
 			nmapRun.setScanInfo(scanInfo);
 		} else if (qName.equals(Debugging.DEBUGGING_TAG)) {
 			if(debugging!=null){
-				throw new InternalError( nestedTagErrorMsg(qName));
+				throw new RuntimeException( nestedTagErrorMsg(qName));
 			}
 			debugging = runHandler.createDebugging(attributes);
 			nmapRun.setDebugging(debugging);
 		} else if (qName.equals(Verbose.VERBOSE_TAG)) {
 			if(verbose!=null){
-				throw new InternalError( nestedTagErrorMsg(qName));
+				throw new RuntimeException( nestedTagErrorMsg(qName));
 			}
 			verbose = runHandler.createVerbose(attributes);
 			nmapRun.setVerbose(verbose);
 		} else if (qName.equals(Host.HOST_TAG)) {
 			if(host!=null){
-				throw new InternalError( nestedTagErrorMsg(qName));
+				throw new RuntimeException( nestedTagErrorMsg(qName));
 			}
 			host = runHandler.createHost(attributes);
 			nmapRun.addHost(host);
 		} else if (qName.equals(Status.STATUS_TAG)) {
 			if(status!=null){
-				throw new InternalError( nestedTagErrorMsg(qName));
+				throw new RuntimeException( nestedTagErrorMsg(qName));
 			}
 			status = runHandler.createStatus(attributes);
 			host.setStatus(status);
 		} else if (qName.equals(Address.ADDRESS_TAG)) {
 			if(address!=null){
-				throw new InternalError( nestedTagErrorMsg(qName));
+				throw new RuntimeException( nestedTagErrorMsg(qName));
 			}
 			address = runHandler.createAddress(attributes);
 			host.addAddress(address);
 		} else if (qName.equals(Hostnames.HOSTNAMES_TAG)) {
 			if(hostnames!=null){
-				throw new InternalError( nestedTagErrorMsg(qName));
+				throw new RuntimeException( nestedTagErrorMsg(qName));
 			}
 			hostnames = runHandler.createHostnames(attributes);
 			host.setHostnames(hostnames);
 		} else if (qName.equals(Hostname.HOSTNAME_TAG)) {
 			if(hostname!=null){
-				throw new InternalError( nestedTagErrorMsg(qName));
+				throw new RuntimeException( nestedTagErrorMsg(qName));
 			}
 			hostname = runHandler.createHostname(attributes);
 			hostnames.setHostname(hostname);
 		} else if (qName.equals(Ports.PORTS_TAG)) {
 			if(ports!=null){
-				throw new InternalError( nestedTagErrorMsg(qName));
+				throw new RuntimeException( nestedTagErrorMsg(qName));
 			}
 			ports = runHandler.createPorts(attributes);
 			host.setPorts(ports);
 		} else if (qName.equals(Port.PORT_TAG)) {
 			if(port!=null){
-				throw new InternalError( nestedTagErrorMsg(qName));
+				throw new RuntimeException( nestedTagErrorMsg(qName));
 			}
 			port = runHandler.createPort(attributes);
 			ports.addPort(port);
 		} else if (qName.equals(State.STATE_TAG)) {
 			if(state!=null){
-				throw new InternalError( nestedTagErrorMsg(qName));
+				throw new RuntimeException( nestedTagErrorMsg(qName));
 			}
 			state = runHandler.createState(attributes);
 			port.setState(state);
 		} else if (qName.equals(Service.SERVICE_TAG)) {
 			if(service!=null){
-				throw new InternalError( nestedTagErrorMsg(qName));
+				throw new RuntimeException( nestedTagErrorMsg(qName));
 			}
 			service = runHandler.createService(attributes);
 			port.setService(service);
 		} else if (qName.equals(Os.OS_TAG)) {
 			if(os!=null){
-				throw new InternalError( nestedTagErrorMsg(qName));
+				throw new RuntimeException( nestedTagErrorMsg(qName));
 			}
 			os = runHandler.createOs(attributes);
 			host.setOs(os);
 		} else if (qName.equals(PortUsed.PORT_USED_TAG)) {
 			if(portUsed!=null){
-				throw new InternalError( nestedTagErrorMsg(qName));
+				throw new RuntimeException( nestedTagErrorMsg(qName));
 			}
 			portUsed = runHandler.createPortUsed(attributes);
 			os.addPortUsed(portUsed);
 		} else if (qName.equals(OsClass.OSCLASS_TAG)) {
 			if(osClass!=null){
-				throw new InternalError( nestedTagErrorMsg(qName));
+				throw new RuntimeException( nestedTagErrorMsg(qName));
 			}
 			osClass = runHandler.createOsClass(attributes);
 			if(osMatch==null ){
@@ -264,55 +264,55 @@ public class NMapXmlHandler extends DefaultHandler {
 			}
 		} else if (qName.equals(OsMatch.OS_MATCH_TAG)) {
 			if(osMatch!=null){
-				throw new InternalError( nestedTagErrorMsg(qName));
+				throw new RuntimeException( nestedTagErrorMsg(qName));
 			}
 			osMatch = runHandler.createOsMatch(attributes);
 			os.addOsMatch(osMatch);
 		} else if (qName.equals(Distance.DISTANCE_TAG)) {
 			if(distance!=null){
-				throw new InternalError( nestedTagErrorMsg(qName));
+				throw new RuntimeException( nestedTagErrorMsg(qName));
 			}
 			distance = runHandler.createDistance(attributes);
 			host.setDistance(distance);
 		} else if (qName.equals(TcpSequence.TCP_SEQUENCE_TAG)) {
 			if(tcpSequence!=null){
-				throw new InternalError( nestedTagErrorMsg(qName));
+				throw new RuntimeException( nestedTagErrorMsg(qName));
 			}
 			tcpSequence = runHandler.createTcpSequence(attributes);
 			host.setTcpSequence(tcpSequence);
 		} else if (qName.equals(TcpTsSequence.TCP_TS_SEQUENCE_TAG)) {
 			if(tcpTsSequence!=null){
-				throw new InternalError( nestedTagErrorMsg(qName));
+				throw new RuntimeException( nestedTagErrorMsg(qName));
 			}
 			tcpTsSequence = runHandler.createTcpTsSequence(attributes);
 			host.setTcpTsSequence(tcpTsSequence);
 		} else if (qName.equals(Times.TIMES_TAG)) {
 			if(times!=null){
-				throw new InternalError( nestedTagErrorMsg(qName));
+				throw new RuntimeException( nestedTagErrorMsg(qName));
 			}
 			times = runHandler.createTimes(attributes);
 			host.setTimes(times);
 		} else if (qName.equals(Uptime.UPTIME_TAG)) {
 			if(uptime!=null){
-				throw new InternalError( nestedTagErrorMsg(qName));
+				throw new RuntimeException( nestedTagErrorMsg(qName));
 			}
 			uptime = runHandler.createUptime(attributes);
 			host.setUptime(uptime);
 		} else if (qName.equals(RunStats.RUNSTATS_TAG)) {
 			if(runStats!=null){
-				throw new InternalError( nestedTagErrorMsg(qName));
+				throw new RuntimeException( nestedTagErrorMsg(qName));
 			}
 			runStats = runHandler.createRunStats(attributes);
 			nmapRun.setRunStats(runStats);
 		} else if (qName.equals(Finished.FINISHED_TAG)) {
 			if(finished!=null){
-				throw new InternalError( nestedTagErrorMsg(qName));
+				throw new RuntimeException( nestedTagErrorMsg(qName));
 			}
 			finished = runHandler.createFinished(attributes);
 			runStats.setFinished(finished);
 		} else if (qName.equals(Hosts.HOSTS_TAG)) {
 			if(hosts!=null){
-				throw new InternalError( nestedTagErrorMsg(qName));
+				throw new RuntimeException( nestedTagErrorMsg(qName));
 			}
 			hosts = runHandler.createHosts(attributes);
 			runStats.setHosts(hosts);
@@ -326,19 +326,19 @@ public class NMapXmlHandler extends DefaultHandler {
 			}
 		} else if (qName.equals(Trace.TRACE_TAG)) {
 			if(trace!=null){
-				throw new InternalError( nestedTagErrorMsg(qName));
+				throw new RuntimeException( nestedTagErrorMsg(qName));
 			}
 			trace = runHandler.createTrace(attributes);
 			host.setTrace(trace);
 		} else if (qName.equals(Hop.HOP_TAG)) {
 			if(hop!=null){
-				throw new InternalError( nestedTagErrorMsg(qName));
+				throw new RuntimeException( nestedTagErrorMsg(qName));
 			}
 			hop = runHandler.createHop(attributes);
 			trace.addHop(hop);
 		} else if (qName.equals(HostScript.TAG)) {
 			if(hostScript!=null){
-				throw new InternalError( nestedTagErrorMsg(qName));
+				throw new RuntimeException( nestedTagErrorMsg(qName));
 			}
 			hostScript = runHandler.createHostScript(attributes);
 			host.setHostScript(this.hostScript);
@@ -359,7 +359,7 @@ public class NMapXmlHandler extends DefaultHandler {
 			}
 		} else if (qName.equals(Script.ELEMTAG)) {
 			if (this.elemkey != null) {
-				throw new InternalError( nestedTagErrorMsg(qName));
+				throw new RuntimeException( nestedTagErrorMsg(qName));
 			}
 			// sometimes this.script == null in practice so I will not check it. Not sure if it should be.
 			this.elemkey = attributes.getValue("key");
