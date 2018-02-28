@@ -34,19 +34,17 @@ import static org.junit.Assert.fail;
 public class OnePassParserTest implements IConstants {
 
 
-    public void testOnePass() {
+    public void testOnePass() throws IOException {
         OnePassParser opp = new OnePassParser();
 
         NMapRun nmapRun = null;
-        try {
-            InputStream is = getClass().getClassLoader().getResourceAsStream(NmapDataSamples.fileName);
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream(NmapDataSamples.fileName)){
+
 
             String fileAsString = IOUtils.toString(is);
 
             nmapRun = opp.parse(fileAsString, OnePassParser.STRING_INPUT);
 
-        } catch (IOException e) {
-            e.printStackTrace();
         }
 
         if (nmapRun != null) {
@@ -62,19 +60,18 @@ public class OnePassParserTest implements IConstants {
 
         OnePassParser opp = new OnePassParser();
 
-        NMapRun nmapRun = null;
+		try(InputStream is = getClass().getClassLoader().getResourceAsStream(NmapDataSamples.smbFileName)) {
 
-		InputStream is = getClass().getClassLoader().getResourceAsStream(NmapDataSamples.smbFileName);
+			String fileAsString = IOUtils.toString( is );
 
-		String fileAsString = IOUtils.toString(is);
+			NMapRun nmapRun = opp.parse( fileAsString, OnePassParser.STRING_INPUT );
 
-		nmapRun = opp.parse(fileAsString, OnePassParser.STRING_INPUT);
-
-        if (nmapRun != null) {
-            System.out.println("hosts count: " + nmapRun.getHosts().size());
-        } else {
-            System.out.println("nmapRun is null");
-        }
+			if (nmapRun != null) {
+				System.out.println( "hosts count: " + nmapRun.getHosts().size() );
+			} else {
+				System.out.println( "nmapRun is null" );
+			}
+		}
     }
 
 
@@ -88,29 +85,30 @@ public class OnePassParserTest implements IConstants {
 
         NMapRun nmapRun = null;
 
-		InputStream is = getClass().getClassLoader().getResourceAsStream(NmapDataSamples.smbFileName);
+		try(InputStream is = getClass().getClassLoader().getResourceAsStream(NmapDataSamples.smbFileName)) {
 
-		String fileAsString = IOUtils.toString(is);
+			String fileAsString = IOUtils.toString( is );
 
-		nmapRun = opp.parse(fileAsString, OnePassParser.STRING_INPUT);
+			nmapRun = opp.parse( fileAsString, OnePassParser.STRING_INPUT );
 
-		ArrayList<Host> hosts = nmapRun.getHosts();
+			ArrayList<Host> hosts = nmapRun.getHosts();
 
-		boolean foundAtLeastOneNotNullCpeObj = false;
+			boolean foundAtLeastOneNotNullCpeObj = false;
 
-		for (Host host : hosts) {
-			if (host.getOs() != null) {
-				ArrayList<OsMatch> osMatches = host.getOs().getOsMatches();
-				for(OsMatch osMatch:osMatches){
-					if (osMatch.getOsClasses() != null) {
-						ArrayList<OsClass> osClasses = osMatch.getOsClasses();
-						for (OsClass osClass : osClasses) {
-							ArrayList<Cpe> cpeData = osClass.getCpe();
-							for (Cpe cpe : cpeData) {
-								if (cpe != null) {
-									if (cpe.getCpeData() != null) {
-										System.out.println(cpe.getCpeData());
-										foundAtLeastOneNotNullCpeObj = true;
+			for (Host host : hosts) {
+				if (host.getOs() != null) {
+					ArrayList<OsMatch> osMatches = host.getOs().getOsMatches();
+					for (OsMatch osMatch : osMatches) {
+						if (osMatch.getOsClasses() != null) {
+							ArrayList<OsClass> osClasses = osMatch.getOsClasses();
+							for (OsClass osClass : osClasses) {
+								ArrayList<Cpe> cpeData = osClass.getCpe();
+								for (Cpe cpe : cpeData) {
+									if (cpe != null) {
+										if (cpe.getCpeData() != null) {
+											System.out.println( cpe.getCpeData() );
+											foundAtLeastOneNotNullCpeObj = true;
+										}
 									}
 								}
 							}
@@ -118,20 +116,19 @@ public class OnePassParserTest implements IConstants {
 					}
 				}
 			}
+
+			if (!foundAtLeastOneNotNullCpeObj) {
+				fail();
+			}
+
+
+			if (nmapRun != null) {
+				System.out.println( "hosts count: " + nmapRun.getHosts().size() );
+			} else {
+				System.out.println( "nmapRun is null" );
+			}
 		}
 
-		if (!foundAtLeastOneNotNullCpeObj) {
-			fail();
-		}
-
-
-
-
-        if (nmapRun != null) {
-            System.out.println("hosts count: " + nmapRun.getHosts().size());
-        } else {
-            System.out.println("nmapRun is null");
-        }
     }
 
     @Test
@@ -176,22 +173,23 @@ public class OnePassParserTest implements IConstants {
 
         HostListener simpleListener = new HostListener();
 
-		InputStream is = getClass().getClassLoader().getResourceAsStream(NmapDataSamples.smbFileName);
+		try(InputStream is = getClass().getClassLoader().getResourceAsStream(NmapDataSamples.smbFileName)) {
 
-		String fileAsString = IOUtils.toString(is);
+			String fileAsString = IOUtils.toString( is );
 
-		opp.addListener(simpleListener);
-		nmapRun = opp.parse(fileAsString, OnePassParser.STRING_INPUT);
+			opp.addListener( simpleListener );
+			nmapRun = opp.parse( fileAsString, OnePassParser.STRING_INPUT );
 
-		ArrayList<Host> hosts = nmapRun.getHosts();
+			ArrayList<Host> hosts = nmapRun.getHosts();
 
-        if (nmapRun != null) {
-            if (nmapRun.getHosts().size() != simpleListener.getHostCount()) {
-                fail();
-            }
-        } else {
-            fail();
-        }
+			if (nmapRun != null) {
+				if (hosts.size() != simpleListener.getHostCount()) {
+					fail();
+				}
+			} else {
+				fail();
+			}
+		}
     }
 
     private class HostListener implements NMap4JParserEventListener {
