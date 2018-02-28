@@ -322,7 +322,7 @@ public class NMapXmlHandler extends DefaultHandler {
 			if (previousQName.equals(OsClass.OSCLASS_TAG)) {
 				osClass.addCpe(cpe);
 			} else if (previousQName.equals(Service.SERVICE_TAG)) {
-
+				// TODO: This can happen but no need to implement for me.
 			}
 		} else if (qName.equals(Trace.TRACE_TAG)) {
 			if(trace!=null){
