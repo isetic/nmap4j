@@ -83,8 +83,8 @@ public class OnePassParser implements NMap4JParserEventListener {
 	}
 	
 	public NMapRun parse( String input, int type  ) {
-		
-		NMapXmlHandler.addListener( this ) ;
+
+		nmxh.addListener( this ) ;
 		
 		SAXParserFactory spf = SAXParserFactory.newInstance();
 	    try {
@@ -112,8 +112,8 @@ public class OnePassParser implements NMap4JParserEventListener {
 	    }catch (IOException ie) {
 	      ie.printStackTrace();
 	    }
-	    
-	    NMapXmlHandler.removeListener( this ) ;
+
+		nmxh.removeListener( this ) ;
 	    
 		return nmapRun ;
 	}
@@ -126,11 +126,11 @@ public class OnePassParser implements NMap4JParserEventListener {
 	}
 	
 	public void addListener(NMap4JParserEventListener aListener ) {
-		NMapXmlHandler.addListener( aListener ) ; 
+		nmxh.addListener( aListener ) ;
  	}
 	
 	public void removeListener( NMap4JParserEventListener aListener ) {
-		NMapXmlHandler.removeListener( aListener ) ;
+		nmxh.removeListener( aListener ) ;
 	}
 	
 }

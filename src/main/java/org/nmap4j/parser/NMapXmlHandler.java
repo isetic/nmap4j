@@ -76,7 +76,7 @@ import java.util.List;
 public class NMapXmlHandler extends DefaultHandler {
 	final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-	private static List<NMap4JParserEventListener> listeners;
+	private List<NMap4JParserEventListener> listeners;
 
 	private final INMapRunHandler runHandler;
 
@@ -127,6 +127,9 @@ public class NMapXmlHandler extends DefaultHandler {
 	}
 
 	private void fireEvent(Object payload) {
+		if(payload==null){
+			throw new SAXEndTagError("Nmap XML error, end tag with no beginning?");
+		}
 		ParserEvent event = new ParserEvent(this, payload);
 		if (listeners != null && listeners.size() > 0) {
 			Iterator<NMap4JParserEventListener> listenersIterator = listeners.iterator();
@@ -139,14 +142,14 @@ public class NMapXmlHandler extends DefaultHandler {
 		}
 	}
 
-	public static void addListener(NMap4JParserEventListener listener) {
+	public void addListener(NMap4JParserEventListener listener) {
 		if (listeners == null) {
 			listeners = new ArrayList<>();
 		}
 		listeners.add(listener);
 	}
 
-	public static void removeListener(NMap4JParserEventListener listener) {
+	public void removeListener(NMap4JParserEventListener listener) {
 		listeners.remove(listener);
 	}
 
@@ -155,132 +158,191 @@ public class NMapXmlHandler extends DefaultHandler {
 		parseStartTime = System.currentTimeMillis();
 	}
 
+	private static String nestedTagErrorMsg(String tagName) {
+		return String.format( "Error processing {} nmap XML tag inside {} tag. nested twice? his should not happen.", tagName , tagName );
+	}
+
 	@Override
 	public void startElement(String uri, String localName, String qName,
 							 Attributes attributes) throws SAXException {
 
 		if (qName.equals(NMapRun.NMAPRUN_TAG)) {
 			nmapRun = runHandler.createNMapRun(attributes);
-		}
-		if (qName.equals(ScanInfo.SCANINFO_TAG)) {
+		} else if (qName.equals(ScanInfo.SCANINFO_TAG)) {
+			if(scanInfo!=null){
+				throw new SaxNestedTagError( nestedTagErrorMsg(qName) );
+			}
 			scanInfo = runHandler.createScanInfo(attributes);
 			nmapRun.setScanInfo(scanInfo);
-		}
-		if (qName.equals(Debugging.DEBUGGING_TAG)) {
+		} else if (qName.equals(Debugging.DEBUGGING_TAG)) {
+			if(debugging!=null){
+				throw new SaxNestedTagError( nestedTagErrorMsg(qName));
+			}
 			debugging = runHandler.createDebugging(attributes);
 			nmapRun.setDebugging(debugging);
-		}
-		if (qName.equals(Verbose.VERBOSE_TAG)) {
+		} else if (qName.equals(Verbose.VERBOSE_TAG)) {
+			if(verbose!=null){
+				throw new SaxNestedTagError( nestedTagErrorMsg(qName));
+			}
 			verbose = runHandler.createVerbose(attributes);
 			nmapRun.setVerbose(verbose);
-		}
-		if (qName.equals(Host.HOST_TAG)) {
+		} else if (qName.equals(Host.HOST_TAG)) {
+			if(host!=null){
+				throw new SaxNestedTagError( nestedTagErrorMsg(qName));
+			}
 			host = runHandler.createHost(attributes);
 			nmapRun.addHost(host);
-		}
-		if (qName.equals(Status.STATUS_TAG)) {
+		} else if (qName.equals(Status.STATUS_TAG)) {
+			if(status!=null){
+				throw new SaxNestedTagError( nestedTagErrorMsg(qName));
+			}
 			status = runHandler.createStatus(attributes);
 			host.setStatus(status);
-		}
-		if (qName.equals(Address.ADDRESS_TAG)) {
+		} else if (qName.equals(Address.ADDRESS_TAG)) {
+			if(address!=null){
+				throw new SaxNestedTagError( nestedTagErrorMsg(qName));
+			}
 			address = runHandler.createAddress(attributes);
 			host.addAddress(address);
-		}
-		if (qName.equals(Hostnames.HOSTNAMES_TAG)) {
+		} else if (qName.equals(Hostnames.HOSTNAMES_TAG)) {
+			if(hostnames!=null){
+				throw new SaxNestedTagError( nestedTagErrorMsg(qName));
+			}
 			hostnames = runHandler.createHostnames(attributes);
 			host.setHostnames(hostnames);
-		}
-		if (qName.equals(Hostname.HOSTNAME_TAG)) {
+		} else if (qName.equals(Hostname.HOSTNAME_TAG)) {
+			if(hostname!=null){
+				throw new SaxNestedTagError( nestedTagErrorMsg(qName));
+			}
 			hostname = runHandler.createHostname(attributes);
 			hostnames.setHostname(hostname);
-		}
-		if (qName.equals(Ports.PORTS_TAG)) {
+		} else if (qName.equals(Ports.PORTS_TAG)) {
+			if(ports!=null){
+				throw new SaxNestedTagError( nestedTagErrorMsg(qName));
+			}
 			ports = runHandler.createPorts(attributes);
 			host.setPorts(ports);
-		}
-		if (qName.equals(Port.PORT_TAG)) {
+		} else if (qName.equals(Port.PORT_TAG)) {
+			if(port!=null){
+				throw new SaxNestedTagError( nestedTagErrorMsg(qName));
+			}
 			port = runHandler.createPort(attributes);
 			ports.addPort(port);
-		}
-		if (qName.equals(State.STATE_TAG)) {
+		} else if (qName.equals(State.STATE_TAG)) {
+			if(state!=null){
+				throw new SaxNestedTagError( nestedTagErrorMsg(qName));
+			}
 			state = runHandler.createState(attributes);
 			port.setState(state);
-		}
-		if (qName.equals(Service.SERVICE_TAG)) {
+		} else if (qName.equals(Service.SERVICE_TAG)) {
+			if(service!=null){
+				throw new SaxNestedTagError( nestedTagErrorMsg(qName));
+			}
 			service = runHandler.createService(attributes);
 			port.setService(service);
-		}
-		if (qName.equals(Os.OS_TAG)) {
+		} else if (qName.equals(Os.OS_TAG)) {
+			if(os!=null){
+				throw new SaxNestedTagError( nestedTagErrorMsg(qName));
+			}
 			os = runHandler.createOs(attributes);
 			host.setOs(os);
-		}
-		if (qName.equals(PortUsed.PORT_USED_TAG)) {
+		} else if (qName.equals(PortUsed.PORT_USED_TAG)) {
+			if(portUsed!=null){
+				throw new SaxNestedTagError( nestedTagErrorMsg(qName));
+			}
 			portUsed = runHandler.createPortUsed(attributes);
 			os.addPortUsed(portUsed);
-		}
-		if (qName.equals(OsClass.OSCLASS_TAG)) {
+		} else if (qName.equals(OsClass.OSCLASS_TAG)) {
+			if(osClass!=null){
+				throw new SaxNestedTagError( nestedTagErrorMsg(qName));
+			}
 			osClass = runHandler.createOsClass(attributes);
-			os.addOsClass(osClass);
-		}
-		if (qName.equals(OsMatch.OS_MATCH_TAG)) {
+			if(osMatch==null ){
+				os.addOsClass( osClass );
+			}else  {
+				osMatch.addOsClass( osClass );
+			}
+		} else if (qName.equals(OsMatch.OS_MATCH_TAG)) {
+			if(osMatch!=null){
+				throw new SaxNestedTagError( nestedTagErrorMsg(qName));
+			}
 			osMatch = runHandler.createOsMatch(attributes);
 			os.addOsMatch(osMatch);
-		}
-		if (qName.equals(Distance.DISTANCE_TAG)) {
+		} else if (qName.equals(Distance.DISTANCE_TAG)) {
+			if(distance!=null){
+				throw new SaxNestedTagError( nestedTagErrorMsg(qName));
+			}
 			distance = runHandler.createDistance(attributes);
 			host.setDistance(distance);
-		}
-		if (qName.equals(TcpSequence.TCP_SEQUENCE_TAG)) {
+		} else if (qName.equals(TcpSequence.TCP_SEQUENCE_TAG)) {
+			if(tcpSequence!=null){
+				throw new SaxNestedTagError( nestedTagErrorMsg(qName));
+			}
 			tcpSequence = runHandler.createTcpSequence(attributes);
 			host.setTcpSequence(tcpSequence);
-		}
-		if (qName.equals(TcpTsSequence.TCP_TS_SEQUENCE_TAG)) {
+		} else if (qName.equals(TcpTsSequence.TCP_TS_SEQUENCE_TAG)) {
+			if(tcpTsSequence!=null){
+				throw new SaxNestedTagError( nestedTagErrorMsg(qName));
+			}
 			tcpTsSequence = runHandler.createTcpTsSequence(attributes);
 			host.setTcpTsSequence(tcpTsSequence);
-		}
-		if (qName.equals(Times.TIMES_TAG)) {
+		} else if (qName.equals(Times.TIMES_TAG)) {
+			if(times!=null){
+				throw new SaxNestedTagError( nestedTagErrorMsg(qName));
+			}
 			times = runHandler.createTimes(attributes);
 			host.setTimes(times);
-		}
-		if (qName.equals(Uptime.UPTIME_TAG)) {
+		} else if (qName.equals(Uptime.UPTIME_TAG)) {
+			if(uptime!=null){
+				throw new SaxNestedTagError( nestedTagErrorMsg(qName));
+			}
 			uptime = runHandler.createUptime(attributes);
 			host.setUptime(uptime);
-		}
-		if (qName.equals(RunStats.RUNSTATS_TAG)) {
+		} else if (qName.equals(RunStats.RUNSTATS_TAG)) {
+			if(runStats!=null){
+				throw new SaxNestedTagError( nestedTagErrorMsg(qName));
+			}
 			runStats = runHandler.createRunStats(attributes);
 			nmapRun.setRunStats(runStats);
-		}
-		if (qName.equals(Finished.FINISHED_TAG)) {
+		} else if (qName.equals(Finished.FINISHED_TAG)) {
+			if(finished!=null){
+				throw new SaxNestedTagError( nestedTagErrorMsg(qName));
+			}
 			finished = runHandler.createFinished(attributes);
 			runStats.setFinished(finished);
-		}
-		if (qName.equals(Hosts.HOSTS_TAG)) {
+		} else if (qName.equals(Hosts.HOSTS_TAG)) {
+			if(hosts!=null){
+				throw new SaxNestedTagError( nestedTagErrorMsg(qName));
+			}
 			hosts = runHandler.createHosts(attributes);
 			runStats.setHosts(hosts);
-		}
-		if (qName.equals(Cpe.CPE_ATTR)) {
+		} else if (qName.equals(Cpe.CPE_ATTR)) {
 			isCpeData = true;
 			cpe = runHandler.createCpe(attributes);
 			if (previousQName.equals(OsClass.OSCLASS_TAG)) {
 				osClass.addCpe(cpe);
 			} else if (previousQName.equals(Service.SERVICE_TAG)) {
-
+				// TODO: This can happen but no need to implement for me.
 			}
-		}
-		if (qName.equals(Trace.TRACE_TAG)) {
+		} else if (qName.equals(Trace.TRACE_TAG)) {
+			if(trace!=null){
+				throw new SaxNestedTagError( nestedTagErrorMsg(qName));
+			}
 			trace = runHandler.createTrace(attributes);
 			host.setTrace(trace);
-		}
-		if (qName.equals(Hop.HOP_TAG)) {
+		} else if (qName.equals(Hop.HOP_TAG)) {
+			if(hop!=null){
+				throw new SaxNestedTagError( nestedTagErrorMsg(qName));
+			}
 			hop = runHandler.createHop(attributes);
 			trace.addHop(hop);
-		}
-
-		if (qName.equals(HostScript.TAG)) {
-			this.hostScript = runHandler.createHostScript(attributes);
-			this.host.setHostScript(this.hostScript);
-		}
-		if (qName.equals(Script.TAG)) {
+		} else if (qName.equals(HostScript.TAG)) {
+			if(hostScript!=null){
+				throw new SaxNestedTagError( nestedTagErrorMsg(qName));
+			}
+			hostScript = runHandler.createHostScript(attributes);
+			host.setHostScript(this.hostScript);
+		} else if (qName.equals(Script.TAG)) {
 			if (this.hostScript != null) {
 				// There are mor tags named script that are not this case.
 				this.script = runHandler.createScript(attributes);
@@ -288,11 +350,16 @@ public class NMapXmlHandler extends DefaultHandler {
 			} else if (this.port != null) {
 				this.script = runHandler.createScript(attributes);
 				this.port.addScript(this.script);
+			}else{
+				if("postscript".equals( previousQName) ){
+					// TODO: This can happen but is not implemented yet.
+				}else{
+					throw new UnsupportedOperationException( "This is not supported because never happened in a wide range of tested data." );
+				}
 			}
-		}
-		if (qName.equals(Script.ELEMTAG)) {
+		} else if (qName.equals(Script.ELEMTAG)) {
 			if (this.elemkey != null) {
-				throw new InternalError("If we start this element none should be previously created. This should not happen.");
+				throw new SaxNestedTagError( nestedTagErrorMsg(qName));
 			}
 			// sometimes this.script == null in practice so I will not check it. Not sure if it should be.
 			this.elemkey = attributes.getValue("key");
@@ -325,126 +392,96 @@ public class NMapXmlHandler extends DefaultHandler {
 		if (qName.equals(NMapRun.NMAPRUN_TAG)) {
 			fireEvent(nmapRun);
 			nmapRun = null;
-		}
-		if (qName.equals(ScanInfo.SCANINFO_TAG)) {
+		} else if (qName.equals(ScanInfo.SCANINFO_TAG)) {
 			fireEvent(scanInfo);
 			scanInfo = null;
-		}
-		if (qName.equals(Debugging.DEBUGGING_TAG)) {
+		} else if (qName.equals(Debugging.DEBUGGING_TAG)) {
 			fireEvent(debugging);
 			debugging = null;
-		}
-		if (qName.equals(Verbose.VERBOSE_TAG)) {
+		} else if (qName.equals(Verbose.VERBOSE_TAG)) {
 			fireEvent(verbose);
 			verbose = null;
-		}
-		if (qName.equals(Host.HOST_TAG)) {
+		} else if (qName.equals(Host.HOST_TAG)) {
 			fireEvent(host);
 			host = null;
-		}
-		if (qName.equals(Status.STATUS_TAG)) {
+		} else if (qName.equals(Status.STATUS_TAG)) {
 			fireEvent(status);
 			status = null;
-		}
-		if (qName.equals(Address.ADDRESS_TAG)) {
+		} else if (qName.equals(Address.ADDRESS_TAG)) {
 			fireEvent(address);
 			address = null;
-		}
-		if (qName.equals(Hostname.HOSTNAME_TAG)) {
+		} else if (qName.equals(Hostname.HOSTNAME_TAG)) {
 			fireEvent(hostname);
 			hostname = null;
-		}
-		if (qName.equals(Hostnames.HOSTNAMES_TAG)) {
+		} else if (qName.equals(Hostnames.HOSTNAMES_TAG)) {
 			fireEvent(hostnames);
 			hostnames = null;
-		}
-		if (qName.equals(Ports.PORTS_TAG)) {
+		} else if (qName.equals(Ports.PORTS_TAG)) {
 			fireEvent(ports);
 			ports = null;
-		}
-		if (qName.equals(Port.PORT_TAG)) {
+		} else if (qName.equals(Port.PORT_TAG)) {
 			fireEvent(port);
 			port = null;
-		}
-		if (qName.equals(State.STATE_TAG)) {
+		} else if (qName.equals(State.STATE_TAG)) {
 			fireEvent(state);
 			state = null;
-		}
-		if (qName.equals(Service.SERVICE_TAG)) {
+		} else if (qName.equals(Service.SERVICE_TAG)) {
 			fireEvent(service);
 			service = null;
-		}
-		if (qName.equals(Os.OS_TAG)) {
+		} else if (qName.equals(Os.OS_TAG)) {
 			fireEvent(os);
 			os = null;
-		}
-		if (qName.equals(PortUsed.PORT_USED_TAG)) {
+		} else if (qName.equals(PortUsed.PORT_USED_TAG)) {
 			fireEvent(portUsed);
 			portUsed = null;
-		}
-		if (qName.equals(OsClass.OSCLASS_TAG)) {
+		} else if (qName.equals(OsClass.OSCLASS_TAG)) {
 			fireEvent(osClass);
 			osClass = null;
-		}
-		if (qName.equals(OsMatch.OS_MATCH_TAG)) {
+		} else if (qName.equals(OsMatch.OS_MATCH_TAG)) {
 			fireEvent(osMatch);
 			osMatch = null;
-		}
-		if (qName.equals(Distance.DISTANCE_TAG)) {
+		} else if (qName.equals(Distance.DISTANCE_TAG)) {
 			fireEvent(distance);
 			distance = null;
-		}
-		if (qName.equals(TcpSequence.TCP_SEQUENCE_TAG)) {
+		} else if (qName.equals(TcpSequence.TCP_SEQUENCE_TAG)) {
 			fireEvent(tcpSequence);
 			tcpSequence = null;
-		}
-		if (qName.equals(TcpTsSequence.TCP_TS_SEQUENCE_TAG)) {
+		} else if (qName.equals(TcpTsSequence.TCP_TS_SEQUENCE_TAG)) {
 			fireEvent(tcpTsSequence);
 			tcpTsSequence = null;
-		}
-		if (qName.equals(Times.TIMES_TAG)) {
+		} else if (qName.equals(Times.TIMES_TAG)) {
 			fireEvent(times);
 			times = null;
-		}
-		if (qName.equals(Uptime.UPTIME_TAG)) {
+		} else if (qName.equals(Uptime.UPTIME_TAG)) {
 			fireEvent(uptime);
 			uptime = null;
-		}
-		if (qName.equals(RunStats.RUNSTATS_TAG)) {
+		} else if (qName.equals(RunStats.RUNSTATS_TAG)) {
 			fireEvent(runStats);
 			runStats = null;
-		}
-		if (qName.equals(Finished.FINISHED_TAG)) {
+		} else if (qName.equals(Finished.FINISHED_TAG)) {
 			fireEvent(finished);
 			finished = null;
-		}
-		if (qName.equals(Hosts.HOSTS_TAG)) {
+		} else if (qName.equals(Hosts.HOSTS_TAG)) {
 			fireEvent(hosts);
 			hosts = null;
-		}
-		if (qName.equals(Cpe.CPE_ATTR)) {
+		} else if (qName.equals(Cpe.CPE_ATTR)) {
 			fireEvent(cpe);
 			cpe = null;
-		}
-		if (qName.equals(Trace.TRACE_TAG)) {
+		} else if (qName.equals(Trace.TRACE_TAG)) {
 			fireEvent(trace);
 			trace = null;
-		}
-		if (qName.equals(Hop.HOP_TAG)) {
+		} else if (qName.equals(Hop.HOP_TAG)) {
 			fireEvent(hop);
 			hop = null;
-		}
-		if (qName.equals(HostScript.TAG)) {
+		} else if (qName.equals(HostScript.TAG)) {
 			fireEvent(hostScript);
 			hostScript = null;
-		}
-		if (qName.equals(Script.TAG)) {
+		} else if (qName.equals(Script.TAG)) {
 			if (this.hostScript != null || this.port != null) {
 				fireEvent(script);
 				script = null;
 			}
-		}
-		if (qName.equals(Script.ELEMTAG)) {
+		} else if (qName.equals(Script.ELEMTAG)) {
 			elemkey = null;
 		}
 	}
